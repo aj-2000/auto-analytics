@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import styled from "styled-components";
+import CompareCars from "./components/CompareCars";
+import { DataContainer } from "./components/DataContainer";
+import { Navbar } from "./components/NavBar";
+import { QueryOneComponent } from "./components/queries/QueryOneComponent";
+import QueryTwoComponent from "./components/queries/QueryTwoComponent";
+import BasicTable from "./components/Table";
+
+import { Tile } from "./components/Tile";
+const TileSection = styled.section`
+  display: flex;
+  width: auto;
+  align-items: center;
+  justify-content: space-around;
+`
+const Container = styled.div`
+  background-color: #F3F4F6;
+  display: flex;
+  flex-direction: column;
+`
+
+const CardSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+    {/* <Navbar/>
+    <TileSection>
+    <Tile/>
+    <Tile/>
+    <Tile/>
+    </TileSection>
+    <CardSection>
+    <DataContainer title="Top 5 Expensive Car Brands" queryComponent={<QueryTwoComponent/>}/>
+    <DataContainer title="Relationship Between Price and Mileage" queryComponent={<QueryOneComponent/>}/>
+    <DataContainer title="Relationship Between Price and Mileage" queryComponent={<QueryOneComponent/>}/>
+    <DataContainer title="Top 5 Expensive Car Brands" queryComponent={<QueryTwoComponent/>}/>
+    </CardSection> */}
+    <CompareCars/>
+    </Container>
+    
+  
   );
 }
 
