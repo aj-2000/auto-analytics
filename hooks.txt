@@ -1,0 +1,20 @@
+1. useState
+    state->access(no rerender)->set(rerender),
+2. useReducer
+    alternative of useState -> require a reducer fuction that uses SWITCH patter->dispath fuction is used to call methods,
+3. useRef
+    use to manipulate DOM directly -> implements vanillaJS solns -> we can access different properties of DOM element,
+4. useEffect
+    used to load data from API,
+    run after rendering of UI element
+5. useLayoutEffect
+    almost identical to useEffect,
+    run before rendering of UI element
+6. useImperativeHandle
+    use to change state of child element using parent element -> useRef is used -> forwardRef
+7. useContext
+    use states(context) created in parent element without passing states through props 
+8. useMemo
+    store the values return from a function and prevents recalling of fucntions
+9. useCallback
+    prevents recreation of function to improve perfomances

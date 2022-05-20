@@ -84,6 +84,15 @@ export function QueryOneComponent() {
               }
           }
       },
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Plot of 500 cars - 2nd Title',
+        },
+      },
       };
       //Data For Chart
       

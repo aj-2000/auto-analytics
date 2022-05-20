@@ -2,7 +2,9 @@ import styled from "styled-components";
 import CompareCars from "./components/CompareCars";
 import { DataContainer } from "./components/DataContainer";
 import { Navbar } from "./components/NavBar";
+import { QueryFourComponent } from "./components/queries/QueryFourComponent";
 import { QueryOneComponent } from "./components/queries/QueryOneComponent";
+import { QueryThreeComponent } from "./components/queries/queryThreeComponent";
 import QueryTwoComponent from "./components/queries/QueryTwoComponent";
 import BasicTable from "./components/Table";
 
@@ -36,10 +38,11 @@ function App() {
     <CardSection>
     <DataContainer title="Top 5 Expensive Car Brands" queryComponent={<QueryTwoComponent/>}/>
     <DataContainer title="Relationship Between Price and Mileage" queryComponent={<QueryOneComponent/>}/>
-    <DataContainer title="Relationship Between Price and Mileage" queryComponent={<QueryOneComponent/>}/>
-    <DataContainer title="Top 5 Expensive Car Brands" queryComponent={<QueryTwoComponent/>}/>
+    <DataContainer title="Top 10 Brands by Sales Volume" queryComponent={<QueryThreeComponent/>}/>
+    <DataContainer title="Top Losers and Gainers by Sales" queryComponent={<QueryFourComponent/>}/>
     </CardSection> */}
     <CompareCars/>
+    {/* <QueryThreeComponent/> */}
     </Container>
     
   

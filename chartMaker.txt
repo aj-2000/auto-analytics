@@ -1,0 +1,5 @@
+PIE - series, labels
+BAR - series, labels
+LINE - seriesX, seriesY
+
+xlabel, ylabel
