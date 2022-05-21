@@ -1,64 +1,53 @@
 import styled from 'styled-components';
 import React from 'react';
-import { LineChart } from './LineChart';
-const Container = styled.div`
-    display: flex;
-    box-sizing: border-box;
-    flex: 1;
-    width: auto;
-    height: auto;
-    box-shadow: black;
-    background-color: #fff;
-    padding: 20px;
-    margin: 10px;
-    margin-top: 20px;
-    justify-content: space-around;
-`;
-const InfoContainer = styled.div`
-   display: flex;
-   flex-direction: column;
-   padding: auto;
-   justify-content: space-around;
-
-`
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import { QueryThreeComponent } from '../components/queries/queryThreeComponent';
+import { Grid, Stack } from '@mui/material';
 
 const Figures = styled.p`
-    font-size: 2rem;
+    font-size: 1.75rem;
     padding: 0%;
     margin: 0%;
+    text-align: center;
 `
-const Tiltle = styled.p`
+
+const Text = styled.p`
     font-size: 1.5rem;
     padding: 0%;
     margin: 0%;
+    text-align: center;
 `
-const Percentages = styled.p`
-    font-size: 1.5rem;
-    padding: 0%;
-    margin: 0%;
-`
-const GraphContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: auto;
-`
+
 export const Tile = (props) => {
   return (
-    <Container>
-        <InfoContainer>
-            <Figures>
+    <Paper elevation={3} >
+    <Box >
+        <Stack spacing={2}>
+            <Box sx={{padding: "0.5rem", backgroundColor:"#EEDD82"}}>
+            <Grid container direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                <Grid item xs={4}>
+                <Figures>
                 32,451
             </Figures>
-            <Tiltle>
+                </Grid>
+                <Grid item xs={4}>
+                <Text>
                 Visits
-            </Tiltle>
-            <Percentages>
+            </Text>
+                </Grid>
+                <Grid item xs={4}>
+                <Text>
                 +14(+0.05%)
-            </Percentages>
-        </InfoContainer>
-        <GraphContainer>
-        <LineChart/>
-        </GraphContainer>
-    </Container>
+            </Text>
+                </Grid>
+            </Grid>
+            </Box>
+            <QueryThreeComponent/>
+        </Stack>
+       
+        
+    </Box>
+    </Paper>
   )
 }

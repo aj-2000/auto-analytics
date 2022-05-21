@@ -16,45 +16,12 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import { Filter } from '@mui/icons-material';
 
+import { useDispatch } from 'react-redux';
+import {useSelector} from "react-redux";
+import {setMake, setFuelType, setTransmission, setOrderBy, setYear, setMileageKML, setEngineCC, setPower, setSeats, setPrice, setNumberOfRecords} from '../redux/filtersSlice'
+import { MANUFACTURER_LIST, PROPERTIES_LIST, Y_DATA_LIST, FUEL_TYPE_LIST, TRANSMISSION_LIST, ORDER_BY_LIST } from '../consts/arrays'
+import {Box} from '@mui/material';
 
-function random_bg_color(opacity) {
-    let x = Math.floor(Math.random() * 256);
-    let y = 100+ Math.floor(Math.random() * 256);
-    let z = 50+ Math.floor(Math.random() * 256);
-    let bgColor = "rgba(" + x + "," + y + "," + z + "," + opacity + ")";
-    return bgColor;
-}
-
-function random_colour_array(size, opacity){
-    let arrayOfColours = []
-    for(let i=0; i<size; i++){
-        arrayOfColours.push(random_bg_color(opacity));
-    }
-}
-
-const MANUFACTURER_LIST = ['All' ,'Maruti', 'Hyundai', 'Honda', 'Audi', 'Nissan', 'Toyota',
-'Volkswagen', 'Tata', 'Land', 'Mitsubishi', 'Renault',
-'MercedesBenz', 'BMW', 'Mahindra', 'Ford', 'Porsche', 'Datsun',
-'Jaguar', 'Volvo', 'Chevrolet', 'Skoda', 'Mini', 'Fiat', 'Jeep',
-'Smart', 'Ambassador', 'Isuzu', 'ISUZU', 'Force', 'Bentley',
-'Lamborghini']
-
-const PROPERTIES_LIST = [
-    'Name', 'Manufacturer', 'Year',
-        'Fuel_Type', 'Transmission', 
-       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price'
-]
-
-const Y_DATA_LIST = [
-        'Year', 
-       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price'
-]
-
-const FUEL_TYPE_LIST = ['All', 'CNG', 'Diesel', 'Petrol', 'LPG']
-
-const TRANSMISSION_LIST = ['All', 'Manual', 'Automatic']
-
-const ORDER_BY_LIST = ['None', 'Name', 'Manufacturer', 'Year', 'EngineCC', 'Power', 'Seats', 'Mileage', 'Price']
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -86,11 +53,7 @@ const Filters = sty.div`
   display:flex;
 
 `
-const ChartDrawerContainer = sty.div`
 
-  height:67vh;
-  width:auto;
-`
 const FilterContainer = sty.div`
   display: flex;
   align-items: center;
@@ -102,30 +65,27 @@ const AlertContainer = sty.div`
   
 `
 
+const ChartDrawerContainer = sty.div`
+
+  height:67vh;
+  width:auto;
+`
+
+
 export const CHART_TYPES = {
     LINE: "line",
     BAR: "bar",
     PIE: "pie"
 }
 
-const CompareCars = () => {
-    
-    // Table Data
-    const [rows, setRows] = useState([]);
+const CompareCars = (value, ...props) => {
 
-    //Filter States
-    const [make, setMake] = useState('All');
-    const [fuelType, setFuelType] = useState('All');
-    const [transmission, setTransmission] = useState('All');
-    const [orderBy, setOrderBy] = useState('None');
-    const [year, setYear] = useState(0);
-    const [mileageKML, setMileageKML] = useState(0);
-    const [engineCC, setEngineCC] = useState(0);
-    const [power, setPower] = useState(0);
-    const [seats, setSeats] = useState(0);
-    const [price, setPrice] = useState(0);
-    const [numberOfRecords, setNumberOfRecords] = useState(50);
-
+    const dispatch = useDispatch();
+    const filters = useSelector((state) => state.filters)
+    const tabs = useSelector((state) => state.tabs)
+    const apiUrl = `http://127.0.0.1:8000/cars/${filters.make}/${filters.fuelType}/${filters.transmission}/${filters.orderBy}/${filters.year}/${filters.mileageKML}/${filters.engineCC}/${filters.power}/${filters.seats}/${filters.price}/${filters.numberOfRecords}/`
+    const dependencyArray = [filters.fuelType, filters.orderBy, filters.transmission, filters.make, filters.price, filters.year, filters.mileageKML, filters.engineCC, filters.power, filters.seats, filters.numberOfRecords];
+    const [rows, setRows] = useState([])
     //ChartMakerStates
     //ChartMaker
     const [chartType, setChartType] = useState(CHART_TYPES.LINE);
@@ -274,39 +234,39 @@ const CompareCars = () => {
     //Filter Handlers
     const handleMake = (event) => {
         setRows([]);
-        setMake(event.target.value);
+        dispatch(setMake(event.target.value));
     };
 
     const handleFuelType = (event) => {
         setRows([]);
-        setFuelType(event.target.value);
+        dispatch(setFuelType(event.target.value));
     };
 
     const handleTransmission = (event) => {
         setRows([]);
-        setTransmission(event.target.value);
+        dispatch(setTransmission(event.target.value));
     };
 
     const handleOrderBy = (event) => {
         setRows([]);
-        setOrderBy(event.target.value);
+        dispatch(setOrderBy(event.target.value));
     };
 
     const handleYear = (event) => {
         setRows([]);
         if(event.target.value){
-            setYear(event.target.value)
+            dispatch(setYear(event.target.value));
         } else {
-            setYear(0)
+            dispatch(setYear(event.target.value));
         } 
     }
     
     const handleMileageKML = (event) => {
         setRows([]);
         if(event.target.value){
-            setMileageKML(event.target.value)
+            dispatch(setMileageKML(event.target.value));
         } else {
-            setMileageKML(0)
+            dispatch(setMileageKML(0));
         }
         
     }
@@ -314,69 +274,64 @@ const CompareCars = () => {
     const handleEngineCC = (event) => {
         setRows([]);
         if(event.target.value){
-            setEngineCC(event.target.value)
+            dispatch(setEngineCC(event.target.value));
         } else {
-            setEngineCC(0)
+            dispatch(setEngineCC(0));
         }
     }
 
     const handlePower = (event) => {
         setRows([]);
         if(event.target.value){
-            setPower(event.target.value)
+            dispatch(setPower(event.target.value));
         } else {
-            setPower(0)
+            dispatch(setPower(0));
         }
     }
 
     const handleSeats = (event) => {
         setRows([]);
         if(event.target.value){
-            setSeats(event.target.value)
+            dispatch(setSeats(event.target.value));
         } else {
-            setSeats(0)
+            dispatch(setSeats(event.target.value));
         }
     }
     
     const handlePrice = (event) => {
         setRows([]);
         if(event.target.value){
-            setPrice(event.target.value)
+            dispatch(setPrice(event.target.value));
         } else {
-            setPrice(0)
+            dispatch(setPrice(0));
         }
     }
 
     const handleNumberOfRecords = (event) => {
         setRows([]);
         if(event.target.value){
-            setNumberOfRecords(event.target.value)
+            dispatch(setNumberOfRecords(event.target.value))
         } else {
-            setNumberOfRecords(0)
+            dispatch(setNumberOfRecords(0))
         }
     }
-    
+   
+
     useEffect(() => {
         async function getFilteredCarsData(){
-            const apiUrl = `http://127.0.0.1:8000/cars/${make}/${fuelType}/${transmission}/${orderBy}/${year}/${mileageKML}/${engineCC}/${power}/${seats}/${price}/${numberOfRecords}/`
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                }
-        
             })
             const tableData = await response.json();
             const obj = JSON.parse(tableData);
             setRows(obj);
-
-    
-            
           }
           getFilteredCarsData()
-
-    }, [fuelType, orderBy, transmission, make, price, year, mileageKML, engineCC, power, seats, numberOfRecords])
-
+    }, dependencyArray)
+    console.log('rerender')
     useEffect(()=>{
             const xDataSetTemp = []
             const yDataSetOneTemp = []
@@ -395,6 +350,9 @@ const CompareCars = () => {
             setYDataSetThree(yDataSetThreeTemp)
 
     },[rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel, yDataSetThreeLabel])
+
+
+
 
 
     const handleXDataSet = (event) => {
@@ -425,7 +383,7 @@ const CompareCars = () => {
             <Select
                 labelId="make-select-label"
                 id="make"
-                value={make}
+                value={filters.make}
                 label="Manufacturer"
                 onChange={handleMake}
             >
@@ -442,7 +400,7 @@ const CompareCars = () => {
             <Select
                 labelId="fuelType-select-label"
                 id="fuelType"
-                value={fuelType}
+                value={filters.fuelType}
                 label="Fuel_Type"
                 onChange={handleFuelType}
             >
@@ -460,7 +418,7 @@ const CompareCars = () => {
             <Select
                 labelId="transmission-select-label"
                 id="transmission"
-                value={transmission}
+                value={filters.transmission}
                 label="Transmission"
                 onChange={handleTransmission}
             >
@@ -478,7 +436,7 @@ const CompareCars = () => {
             <Select
                 labelId="orderBy-select-label"
                 id="orderBy"
-                value={orderBy}
+                value={filters.orderBy}
                 label="OrderBy"
                 onChange={handleOrderBy}
             >
@@ -523,7 +481,7 @@ const CompareCars = () => {
 
         <FilterContainer>
             {/* NumberOfRecords >= */}
-            <TextField id="outlined-basic" defaultValue={'50'} onChange={handleNumberOfRecords} label="Max Records" variant="outlined" />      
+            <TextField id="outlined-basic" defaultValue={filters.numberOfRecords} onChange={handleNumberOfRecords} label="Max Records" variant="outlined" />      
         </FilterContainer>
         </Filters>
         
@@ -541,6 +499,7 @@ const CompareCars = () => {
 
 
     {/* Data Visualizer */}
+    <Box sx={{display:tabs.displayCharts}}>
     <Filters>
         <FilterContainer>
             <ToggleButtonGroup
@@ -636,13 +595,14 @@ const CompareCars = () => {
         {chartType==CHART_TYPES.BAR && <Bar options={options} data={data} />}
         {chartType==CHART_TYPES.PIE && <Pie options={options} data={data} />}
     </ChartDrawerContainer>
+    </Box>
 
             
 
             
 
     {/* Table Rendering  */}
-    <TableContainer component={Paper}>
+    <TableContainer sx={{display: tabs['displayRecords']}} component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <StyledTableRow>

@@ -1,21 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { LineChart } from "./LineChart";
-import { PieChart } from './PieChart';
-import { QueryOne } from './queries/QueryOneComponent';
-import QueryTwoComponent from './queries/QueryTwoComponent';
-import BasicTable from './Table';
-import { VerticalBarChart } from './VerticalBarChart';
-
+import { Paper } from '@mui/material';
 
 const Container = styled.div`
-  display : flex;
   flex-direction: column;
   box-sizing: border-box;
-  margin: 1rem;
-  width: 48%;
-  height: auto;
-  background-color: 323232;
+  margin: 0.5rem 0;
 `
 const ChartContainer = styled.div`
     background-color: #fff;
@@ -23,7 +13,7 @@ const ChartContainer = styled.div`
 
 const ContainerHead = styled.div`
     display: flex;
-    background-color: #2196f3;
+    background-color: #14C38E;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
@@ -38,15 +28,16 @@ const Title = styled.p`
 export const DataContainer = (props) => {
   return (
     <Container>
-        <ContainerHead>
-            <Title>
-               {props.title}
-            </Title>
-        </ContainerHead>
-        <ChartContainer>
-            {props.queryComponent}
-        </ChartContainer>
-        
+      <Paper elevation={3}>
+          <ContainerHead>
+              <Title>
+                {props.title}
+              </Title>
+          </ContainerHead>
+          <ChartContainer>
+              {props.queryComponent}
+          </ChartContainer> 
+      </Paper>
     </Container>
   )
 }
