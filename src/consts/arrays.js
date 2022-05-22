@@ -5,6 +5,8 @@ export const MANUFACTURER_LIST = ['All' ,'Maruti', 'Hyundai', 'Honda', 'Audi', '
 'Smart', 'Ambassador', 'Isuzu', 'ISUZU', 'Force', 'Bentley',
 'Lamborghini']
 
+export const MONTHS_LIST = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 export const PROPERTIES_LIST = [
     'Name', 'Manufacturer', 'Year',
         'Fuel_Type', 'Transmission', 

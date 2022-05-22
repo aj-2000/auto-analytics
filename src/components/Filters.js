@@ -2,24 +2,11 @@ import { TextField, MenuItem, Select, InputLabel, FormControl, Alert} from '@mui
 import React, { useEffect,useState } from 'react';
 import {default as sty} from 'styled-components' ;
 import '../App.css'
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { Filter } from '@mui/icons-material';
 
 import { useDispatch } from 'react-redux';
 import {useSelector} from "react-redux";
 import {setMake, setFuelType, setTransmission, setOrderBy, setYear, setMileageKML, setEngineCC, setPower, setSeats, setPrice, setNumberOfRecords} from '../redux/filtersSlice'
-import { MANUFACTURER_LIST, PROPERTIES_LIST, Y_DATA_LIST, FUEL_TYPE_LIST, TRANSMISSION_LIST, ORDER_BY_LIST } from '../consts/arrays'
+import { MANUFACTURER_LIST, FUEL_TYPE_LIST, TRANSMISSION_LIST, ORDER_BY_LIST } from '../consts/arrays'
 const Container = sty.div`
   display:flex;
   flex-direction: column;

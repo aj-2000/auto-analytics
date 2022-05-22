@@ -4,7 +4,6 @@ import Tab from '@mui/material/Tab';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import TableViewIcon from '@mui/icons-material/TableView';
 import { Box } from '@mui/system';
-import Filters from '../components/Filters';
 import CompareCars from '../components/CompareCars';
 import { useDispatch } from 'react-redux';
 import { viewCharts, viewRecords } from '../redux/tabsSlice';
@@ -13,7 +12,7 @@ export default function IconTabs() {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    if(newValue==0){
+    if(newValue===0){
       dispatch(viewCharts(""))
     } else {
       dispatch(viewRecords(""))

@@ -78,10 +78,6 @@ export function QueryFourComponent() {
           legend: {
             position: 'top',
           },
-          title: {
-            display: true,
-            text: 'Percent Change between 2019 and 2020 sales',
-          },
         },
       };
       const data = {

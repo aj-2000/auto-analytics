@@ -76,10 +76,6 @@ export function QueryThreeComponent() {
           legend: {
             position: 'top',
           },
-          title: {
-            display: true,
-            text: 'Sales Comparison of Top 10 Brans in 2019 and 2020',
-          },
         },
       };
       const data = {
