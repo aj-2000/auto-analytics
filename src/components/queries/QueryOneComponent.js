@@ -1,3 +1,5 @@
+
+import {BASE_URL} from '../../consts/urls'
 import React,{useEffect,useState} from 'react';
 import {
   Chart as ChartJS,
@@ -11,7 +13,6 @@ import { Scatter } from 'react-chartjs-2';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-
 export function QueryOneComponent() {
     //Intializiation of States
     const [dataManual, setDataManual] = useState([]);
@@ -19,7 +20,7 @@ export function QueryOneComponent() {
     //Fetching Data
     useEffect(() => {
         async function getQueryOneDataManual(){
-          const apiUrl = "${BASE_URL}/q1/2"
+          const apiUrl = `${BASE_URL}/q1/2`
           const response = await fetch(apiUrl,{
             headers : { 
               'Content-Type': 'application/json',
@@ -38,7 +39,7 @@ export function QueryOneComponent() {
           setDataManual(data);
         }
         async function getQueryOneDataAutomatic(){
-          const apiUrl = "${BASE_URL}/q1/1"
+          const apiUrl = `${BASE_URL}/q1/1`
           const response = await fetch(apiUrl,{
             headers : { 
               'Content-Type': 'application/json',

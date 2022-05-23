@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { BASE_URL } from '../../consts/urls';
 
 
 ChartJS.register(
@@ -20,7 +21,6 @@ ChartJS.register(
   Legend
 );
 
-
 export function QueryThreeComponent() {
     
     const [labels, setLabels] = useState([])
@@ -30,7 +30,7 @@ export function QueryThreeComponent() {
     
     useEffect(() => {
         async function getQueryThreeData(){
-            const apiUrl = `%{BASE_URL}/q3/`
+            const apiUrl = `${BASE_URL}/q3/`
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',

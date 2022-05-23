@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { BASE_URL } from '../../consts/urls';
 
 
 ChartJS.register(
@@ -26,7 +27,7 @@ export function QueryFourComponent() {
     const [labels, setLabels] = useState([])
     const [series, setSeries] = useState([])
 
-    
+  
     useEffect(() => {
         async function getQueryFourData(){
             const apiUrl = `${BASE_URL}/q4/`
