@@ -10,16 +10,16 @@ export const MONTHS_LIST = ['January', 'February', 'March', 'April', 'May', 'Jun
 export const PROPERTIES_LIST = [
     'Name', 'Manufacturer', 'Year',
         'Fuel_Type', 'Transmission', 
-       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price'
+       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price', 'AverageYearlySales'
 ]
 
 export const Y_DATA_LIST = [
         'Year', 
-       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price'
+       'Engine CC', 'Power', 'Seats', 'Mileage Km/L', 'Price', 'AverageYearlySales'
 ]
 
 export const FUEL_TYPE_LIST = ['All', 'CNG', 'Diesel', 'Petrol', 'LPG']
 
 export const TRANSMISSION_LIST = ['All', 'Manual', 'Automatic']
 
-export const ORDER_BY_LIST = ['None', 'Name', 'Manufacturer', 'Year', 'EngineCC', 'Power', 'Seats', 'Mileage', 'Price']
+export const ORDER_BY_LIST = ['None', 'Name', 'Manufacturer', 'Year', 'EngineCC', 'Power', 'Seats', 'Mileage', 'Price', 'AverageYearlySales']

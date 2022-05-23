@@ -288,6 +288,7 @@ const CompareCars = (value, ...props) => {
             })
             const tableData = await response.json();
             const obj = JSON.parse(tableData);
+            console.log(obj);
             setRows(obj);
           }
           getFilteredCarsData()
@@ -577,6 +578,7 @@ const CompareCars = (value, ...props) => {
             <StyledTableCell align="center" > Seats </StyledTableCell>
             <StyledTableCell align="center" > Mileage(KM/L) </StyledTableCell>
             <StyledTableCell align="center" > Price </StyledTableCell>
+            <StyledTableCell align="center" > Average Yearly Sales </StyledTableCell>
           </StyledTableRow>
         </TableHead>
         <TableBody>
@@ -597,6 +599,7 @@ const CompareCars = (value, ...props) => {
               <StyledTableCell align="right">{row.Seats}</StyledTableCell>
               <StyledTableCell align="right">{row['Mileage Km/L']}</StyledTableCell>
               <StyledTableCell align="right">{row.Price}</StyledTableCell>
+              <StyledTableCell align="right">{row.AverageYearlySales}</StyledTableCell>
             </StyledTableRow>
           ))}
           

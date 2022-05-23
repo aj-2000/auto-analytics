@@ -67,7 +67,8 @@ export function QueryOneComponent() {
           yAxes: {
               title: {
                   display: true,
-                  text: 'Price(in Lakhs)',
+                  text: 'Mileage(in KM/L)',
+  
                   font: {
                       size: 15
                   }
@@ -79,7 +80,7 @@ export function QueryOneComponent() {
           xAxes: {
               title: {
                   display: true,
-                  text: 'Mileage(in KM/L)',
+                  text: 'Price(in Lakhs)',
                   font: {
                       size: 15
                   }
