@@ -9,7 +9,8 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Scatter } from 'react-chartjs-2';
+import {  Scatter } from 'react-chartjs-2';
+import { chartColors } from '../../consts/colors';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -98,12 +99,12 @@ export function QueryOneComponent() {
           {
             label: 'Manual',
             data: dataManual,
-            backgroundColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: chartColors[0],
           },
           {
             label: 'Automatic',
             data: dataAutomatic,
-            backgroundColor: 'rgba(56, 99, 132, 1)',
+            backgroundColor: chartColors[1],
           },
         ],
       };

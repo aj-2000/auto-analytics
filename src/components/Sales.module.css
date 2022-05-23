@@ -1,0 +1,30 @@
+:root {
+    --positive-text-color: #00C853;
+    --negative-text-color: #D50000;
+}
+
+.sales-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+}
+
+.sales-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 5px;
+}
+
+.sales-title {
+    font-size: 1rem;
+    padding: 5px;
+}
+
+.sales-up {
+    color: var(--positive-text-color);
+}
+
+.sales-down {
+    color: var(--negative-text-color);
+}

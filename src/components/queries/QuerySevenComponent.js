@@ -16,6 +16,7 @@ import { Stack, Grid, Chip, Box, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import styled from 'styled-components';
 import { BASE_URL } from '../../consts/urls';
+import { chartColors, chartColorsV1, chartColorsV2 } from '../../consts/colors';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -151,71 +152,71 @@ export function QuerySevenComponent() {
           {
             label: 'Economy',
             data: economy,
-            backgroundColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: chartColors[0],
           },
           {
             label: 'Luxury',
             data: luxury,
-            backgroundColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: chartColors[1],
           },
           {
             label: 'Mid Range',
             data: midRange,
-            backgroundColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: chartColors[2],
           },
           {
             label: 'Ultra Luxury',
             data: ultraLuxury,
-            backgroundColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: chartColors[3],
           },
           {
             label: 'Economy SMA',
             data: economySMA,
             borderDash: [10,5],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            backgroundColor: chartColorsV1[0],
           },
           {
             label: 'Luxury SMA',
             data: luxurySMA,
             borderDash: [10,5],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            backgroundColor: chartColorsV1[1],
           },
           {
             label: 'Mid Range SMA',
             data: midRangeSMA,
             borderDash: [10,5],
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            backgroundColor: chartColorsV1[2],
           },
           {
             label: 'Ultra Luxury SMA',
             data: ultraLuxurySMA,
             borderDash: [10,5],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            backgroundColor: chartColorsV1[3],
           },
           {
             type:'bar',
             label: 'Economy-EconomySMA',
             data: economyDiff,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+            backgroundColor: chartColorsV2[0],
           },
           {
             type:'bar',
             label: 'Luxury-LuxurySMA',
             data: luxuryDiff,
   
-            backgroundColor: 'rgba(54, 162, 235, 0.8)',
+            backgroundColor: chartColorsV2[1],
           },
           {
             type:'bar',
             label: 'MidRange-MidRangeSMA',
             data: midRangeDiff,
-            backgroundColor: 'rgba(255, 206, 86, 0.8)',
+            backgroundColor: chartColorsV2[2],
           },
           {
             type:'bar',
             label: 'UltraLuxury-UltraLuxurySMA',
             data: ultraLuxuryDiff,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+            backgroundColor: chartColorsV2[3],
           },
         ],
       };

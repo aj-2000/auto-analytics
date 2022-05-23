@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { BASE_URL } from '../../consts/urls';
+import { ContactlessOutlined } from '@mui/icons-material';
+import { chartColors } from '../../consts/colors';
 
 
 ChartJS.register(
@@ -36,17 +38,20 @@ export function QueryFourComponent() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                }
-        
             })
             const data = await response.json();
-            const obj = JSON.parse(data);
-            setLabels(Object.values(obj.Brand));
-            setSeries(Object.values(obj['Percent Change']))
-            
+            const objArray = JSON.parse(data);
+            setLabels(objArray.map((obj)=>{
+              return obj.Brand
+            }))
+            setSeries(objArray.map((obj)=>{
+              return obj['Percent Change']
+            }))
           }
           getQueryFourData()
 
     }, [])
+
     const options = {
         responsive: true,
         scales: {
@@ -78,6 +83,7 @@ export function QueryFourComponent() {
         plugins: {
           legend: {
             position: 'top',
+            display: false
           },
         },
       };
@@ -87,7 +93,7 @@ export function QueryFourComponent() {
           {
             label:'Percentage Change',
             data: series,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            backgroundColor: chartColors,
           },
         ],
       };

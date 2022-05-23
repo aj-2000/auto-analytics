@@ -15,6 +15,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { Line, Bar, Pie } from 'react-chartjs-2';
 import { Filter } from '@mui/icons-material';
+import { Scatter } from 'react-chartjs-2';
 
 import { useDispatch } from 'react-redux';
 import {useSelector} from "react-redux";
@@ -22,6 +23,7 @@ import {setMake, setFuelType, setTransmission, setOrderBy, setYear, setMileageKM
 import { MANUFACTURER_LIST, PROPERTIES_LIST, Y_DATA_LIST, FUEL_TYPE_LIST, TRANSMISSION_LIST, ORDER_BY_LIST } from '../consts/arrays'
 import {Box} from '@mui/material';
 import { BASE_URL } from '../consts/urls';
+import { chartColors, chartColorsV2 } from '../consts/colors';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -76,7 +78,7 @@ const ChartDrawerContainer = sty.div`
 export const CHART_TYPES = {
     LINE: "line",
     BAR: "bar",
-    PIE: "pie"
+    // SCATTER: "scatter"
 }
 
 const CompareCars = (value, ...props) => {
@@ -164,67 +166,25 @@ const CompareCars = (value, ...props) => {
             id: 1,
             label: yDataSetOneLabel,
             data: yDataSetOne,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1,
+            borderColor: chartColorsV2[0],
+            backgroundColor: chartColors[0],
+              borderWidth: 2,
           },
           {
             id: 2,
             label: yDataSetTwoLabel,
             data: yDataSetTwo,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1,
+            borderColor: chartColorsV2[1],
+            backgroundColor: chartColors[1],
+              borderWidth: 2,
           },
           {
             id: 3,
             label: yDataSetThreeLabel,
             data: yDataSetThree,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1,
+            borderColor: chartColorsV2[2],
+            backgroundColor: chartColors[2],
+              borderWidth: 2,
           },
           
         ],
@@ -511,7 +471,7 @@ const CompareCars = (value, ...props) => {
             >
             <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
             <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
-            <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton>
+            {/* <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton> */}
     </ToggleButtonGroup>
         </FilterContainer>
         <FilterContainer>
@@ -594,7 +554,7 @@ const CompareCars = (value, ...props) => {
     <ChartDrawerContainer>
         {chartType==CHART_TYPES.LINE && <Line options={options} data={data}/>}
         {chartType==CHART_TYPES.BAR && <Bar options={options} data={data} />}
-        {chartType==CHART_TYPES.PIE && <Pie options={options} data={data} />}
+        {/* {chartType==CHART_TYPES.PIE && <Pie options={options} data={data} />} */}
     </ChartDrawerContainer>
     </Box>
 
