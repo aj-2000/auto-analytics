@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { PolarArea } from 'react-chartjs-2';
 import { Pie } from 'react-chartjs-2';
+import { BASE_URL } from '../../consts/urls';
 
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
@@ -52,7 +53,7 @@ const QuerySixComponent = () => {
 
   useEffect(() => {
     async function getQuerySixData(){
-        const apiUrl = `http://127.0.0.1:8000/q6/${value}`
+        const apiUrl = `${BASE_URL}/q6/${value}`
         const response = await fetch(apiUrl,{
           headers : { 
             'Content-Type': 'application/json',
