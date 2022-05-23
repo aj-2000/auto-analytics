@@ -15,6 +15,7 @@ import {MONTHS_LIST} from '../../consts/arrays'
 import { Stack, Grid, Chip, Box, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import styled from 'styled-components';
+import { BASE_URL } from '../../consts/urls';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -75,8 +76,8 @@ export function QuerySevenComponent() {
     
     useEffect(() => {
         async function getQuerySevenData(){
-            const apiUrlOne = `http://127.0.0.1:8000/q7/1`
-            const apiUrlTwo = `http://127.0.0.1:8000/q7/2`
+            const apiUrlOne = `${BASE_URL}/q7/1`
+            const apiUrlTwo = `${BASE_URL}/q7/2`
             const responseOne = await fetch(apiUrlOne,{
               headers : { 
                 'Content-Type': 'application/json',

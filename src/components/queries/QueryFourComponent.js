@@ -29,7 +29,7 @@ export function QueryFourComponent() {
     
     useEffect(() => {
         async function getQueryFourData(){
-            const apiUrl = `http://127.0.0.1:8000/q4/`
+            const apiUrl = `${BASE_URL}/q4/`
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',

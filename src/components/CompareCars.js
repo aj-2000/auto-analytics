@@ -21,6 +21,7 @@ import {useSelector} from "react-redux";
 import {setMake, setFuelType, setTransmission, setOrderBy, setYear, setMileageKML, setEngineCC, setPower, setSeats, setPrice, setNumberOfRecords} from '../redux/filtersSlice'
 import { MANUFACTURER_LIST, PROPERTIES_LIST, Y_DATA_LIST, FUEL_TYPE_LIST, TRANSMISSION_LIST, ORDER_BY_LIST } from '../consts/arrays'
 import {Box} from '@mui/material';
+import { BASE_URL } from '../consts/urls';
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -83,7 +84,7 @@ const CompareCars = (value, ...props) => {
     const dispatch = useDispatch();
     const filters = useSelector((state) => state.filters)
     const tabs = useSelector((state) => state.tabs)
-    const apiUrl = `http://127.0.0.1:8000/cars/${filters.make}/${filters.fuelType}/${filters.transmission}/${filters.orderBy}/${filters.year}/${filters.mileageKML}/${filters.engineCC}/${filters.power}/${filters.seats}/${filters.price}/${filters.numberOfRecords}/`
+    const apiUrl = `${BASE_URL}/cars/${filters.make}/${filters.fuelType}/${filters.transmission}/${filters.orderBy}/${filters.year}/${filters.mileageKML}/${filters.engineCC}/${filters.power}/${filters.seats}/${filters.price}/${filters.numberOfRecords}/`
     const dependencyArray = [filters.fuelType, filters.orderBy, filters.transmission, filters.make, filters.price, filters.year, filters.mileageKML, filters.engineCC, filters.power, filters.seats, filters.numberOfRecords];
     const [rows, setRows] = useState([])
     //ChartMakerStates

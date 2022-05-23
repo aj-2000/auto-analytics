@@ -30,7 +30,7 @@ export function QueryThreeComponent() {
     
     useEffect(() => {
         async function getQueryThreeData(){
-            const apiUrl = `http://127.0.0.1:8000/q3/`
+            const apiUrl = `%{BASE_URL}/q3/`
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',

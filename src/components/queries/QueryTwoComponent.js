@@ -34,7 +34,7 @@ export default function QueryTwoComponent() {
     const [rows, setRows] = useState([]);
     useEffect(() => {
         async function getQueryTwoData(){
-            const apiUrl = "http://127.0.0.1:8000/q2/"
+            const apiUrl = `${BASE_URL}/q2/`
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',
