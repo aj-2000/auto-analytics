@@ -8,20 +8,26 @@ const Container = styled.div`
   margin: 0.5rem 0;
 `
 const ChartContainer = styled.div`
-    background-color: #fff;
+  background-color: #fff;
+
 `
 
 const ContainerHead = styled.div`
     display: flex;
+    //GREEN_BG_COLOR in consts/colors
     background-color: #14C38E;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    font-size: larger;
-    font-weight: bolder;
+    margin:auto;
+    padding: auto;
 `
 const Title = styled.p`
     color: white;
+    font-size: larger;
+    font-weight: bolder;
+    text-align: center;
+    padding: 0 1rem;
     align-items: center;
 `
 

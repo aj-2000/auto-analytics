@@ -1,41 +1,40 @@
-import React, { useState, useEffect } from 'react'
-import { Box } from '@mui/material'
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import React, { useState, useEffect } from "react";
+import { Box } from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import {
   Chart as ChartJS,
   RadialLinearScale,
   ArcElement,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
-import { Pie } from 'react-chartjs-2';
-import { BASE_URL } from '../../consts/urls';
-import { chartColors } from '../../consts/colors';
-
+import { Pie } from "react-chartjs-2";
+import { BASE_URL } from "../../consts/urls";
+import { chartColors } from "../../consts/colors";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
-
-const tabs = ['Cars Production(Million)', 'Cars Sales(Million)', 'Cars Exports(Billion USD)']
-
+const tabs = [
+  "Cars Production(Million)",
+  "Cars Sales(Million)",
+  "Cars Exports(Billion USD)",
+];
 
 const QueryFiveComponent = () => {
   const [value, setValue] = useState(0);
-  const [series, setSeries] = useState([])
-  const [labels, setLabels] = useState([])
-
- 
+  const [series, setSeries] = useState([]);
+  const [labels, setLabels] = useState([]);
   const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: tabs[value],
-      data: series,
-      backgroundColor: chartColors,
-      borderWidth: 1,
-    },
-  ],
+    labels: labels,
+    datasets: [
+      {
+        label: tabs[value],
+        data: series,
+        backgroundColor: chartColors,
+        borderWidth: 1,
+      },
+    ],
   };
 
   const handleChange = (event, newValue) => {
@@ -43,28 +42,26 @@ const QueryFiveComponent = () => {
   };
 
   useEffect(() => {
-    async function getQueryFiveData(){
-        const apiUrl = `${BASE_URL}/q5/${value}`
-        const response = await fetch(apiUrl,{
-          headers : { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-           }
-    
-        })
-        const data = await response.json();
-        const obj = JSON.parse(data);
-        console.log(obj);
-        setLabels(Object.values(obj['Country']))
-        setSeries( Object.values(obj[tabs[value]]) );
-      }
-      getQueryFiveData()
-
-  }, [value])
+    async function getQueryFiveData() {
+      const apiUrl = `${BASE_URL}/q5/${value}`;
+      const response = await fetch(apiUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      });
+      const data = await response.json();
+      const obj = JSON.parse(data);
+      console.log(obj);
+      setLabels(Object.values(obj["Country"]));
+      setSeries(Object.values(obj[tabs[value]]));
+    }
+    getQueryFiveData();
+  }, [value]);
   return (
-    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+    <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
       <Tabs
-        centered
+        sx={{ justifyContent: "center" }}
         value={value}
         onChange={handleChange}
         variant="scrollable"
@@ -75,9 +72,9 @@ const QueryFiveComponent = () => {
         <Tab label="Sales(M UNITS)" />
         <Tab label="Exports(B USD)" />
       </Tabs>
-    <Pie data={data} />;
+      <Pie data={data} />;
     </Box>
-  )
-}
+  );
+};
 
-export default QueryFiveComponent
+export default QueryFiveComponent;

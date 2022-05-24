@@ -1,31 +1,31 @@
 .leaderboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
 }
 
 .leaderboard-value {
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px;
 }
 
 .leaderboard-title {
-    font-size: 1rem;
-    padding: 5px;
+  font-size: 1rem;
+  padding: 5px;
 }
 
 .leaderboard-img-container {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 5px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 5px;
 }
 
 .leaderboard-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

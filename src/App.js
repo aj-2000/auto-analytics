@@ -9,11 +9,12 @@ function App() {
   return (
     <Box>
       <Stack spacing={2}>
-        <Navbar/>
+        <Navbar />
         <div>
-        {(location.pathname==='/' || location.pathname==='/dashboard')  && <Dashboard/>}
-        {location.pathname==='/analyzer' && <DataAnalyzer/>}
-        </div>  
+          {(location.pathname === "/" ||
+            location.pathname === "/dashboard") && <Dashboard />}
+          {location.pathname === "/analyzer" && <DataAnalyzer />}
+        </div>
       </Stack>
     </Box>
   );
