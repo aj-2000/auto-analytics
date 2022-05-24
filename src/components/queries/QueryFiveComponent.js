@@ -12,6 +12,7 @@ import {
 
 import { Pie } from 'react-chartjs-2';
 import { BASE_URL } from '../../consts/urls';
+import { chartColors } from '../../consts/colors';
 
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
@@ -31,17 +32,7 @@ const QueryFiveComponent = () => {
     {
       label: tabs[value],
       data: series,
-      backgroundColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-          'rgba(3, 62, 62, 1)',
-          'rgba(41, 52, 98, 1)'
-
-      ],
+      backgroundColor: chartColors,
       borderWidth: 1,
     },
   ],
@@ -73,10 +64,12 @@ const QueryFiveComponent = () => {
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <Tabs
+        centered
         value={value}
         onChange={handleChange}
-        centered
-
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
       >
         <Tab label="Production(M UNITS)" />
         <Tab label="Sales(M UNITS)" />

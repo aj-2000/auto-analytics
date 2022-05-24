@@ -61,6 +61,7 @@ export function QueryOneComponent() {
         getQueryOneDataManual();
         getQueryOneDataAutomatic();
       },[])
+      console.log(dataAutomatic)
       //Configuring Scatter Chart
       const options = {
         scales: {
