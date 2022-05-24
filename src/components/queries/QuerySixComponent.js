@@ -16,7 +16,7 @@ import { BASE_URL } from '../../consts/urls';
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const tabs = ['Drive Train', 'Transmission', 'Class', 'Brand', 'Fuel_Type']
+const tabs = ['Drive Train', 'Transmission', 'Class', 'Brand', 'Fuel_Type', 'Body_type']
 
 
 const QuerySixComponent = () => {
@@ -84,6 +84,7 @@ const QuerySixComponent = () => {
         <Tab label="Class" />
         <Tab label="Brand" />
         <Tab label="Fuel Type" />
+        <Tab label="Body Type" />
       </Tabs>
     <Pie data={data} />;
     </Box>

@@ -13,9 +13,8 @@ import Paper from '@mui/material/Paper';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-import { Line, Bar, Pie } from 'react-chartjs-2';
-import { Filter } from '@mui/icons-material';
-import { Scatter } from 'react-chartjs-2';
+import { Line, Bar} from 'react-chartjs-2';
+
 
 import { useDispatch } from 'react-redux';
 import {useSelector} from "react-redux";
@@ -75,10 +74,9 @@ const ChartDrawerContainer = sty.div`
 `
 
 
-export const CHART_TYPES = {
+const CHART_TYPES = {
     LINE: "line",
     BAR: "bar",
-    // SCATTER: "scatter"
 }
 
 const CompareCars = (value, ...props) => {
@@ -93,16 +91,12 @@ const CompareCars = (value, ...props) => {
     //ChartMaker
     const [chartType, setChartType] = useState(CHART_TYPES.LINE);
     const [xTitle, setXTitle] = useState('Name')
-    // const [yTitle, setYTitle] = useState('Y Axis')
     const [chartTitle, setChartTitle] = useState('Chart Title')
     const [xDataSet, setXDataSet] = useState([])
     const [yDataSetOne, setYDataSetOne] = useState([])
     const [yDataSetTwo, setYDataSetTwo] = useState([])
-    const [yDataSetThree, setYDataSetThree] = useState([])
     const [yDataSetOneLabel, setYDataSetOneLabel] = useState(Y_DATA_LIST[0])
     const [yDataSetTwoLabel, setYDataSetTwoLabel] = useState(Y_DATA_LIST[1])
-    const [yDataSetThreeLabel, setYDataSetThreeLabel] = useState(Y_DATA_LIST[2])
-    
     const handleChartType = (event, newChartType) => {
         setChartType(newChartType);
     };
@@ -115,50 +109,57 @@ const CompareCars = (value, ...props) => {
         }
     };
 
-   
-
     const options = {
-        maintainAspectRatio: false,
         responsive: true,
-        scales: {
-            // legend: {
-            //     display: false //This will do the task
-            //  },
-            y: {
-                title: {
-                    display: chartType!=CHART_TYPES.PIE,
-                },
-                ticks: {
-                    precision: 10
-                }
-            },
-            x: {
-                title: {
-                    display: chartType!=CHART_TYPES.PIE,
-                    text: xTitle,
-                    font:{
-                        size:20,
-                        
-                    }
-                },
-                ticks: {
-                    font: {
-                        size: 15,
-                    }
-                }
-            },
-            
+        interaction: {
+          mode: 'index' ,
+          intersect: false,
         },
+        stacked: false,
         plugins: {
-          legend: {
-            position: 'top',
-          },
           title: {
-            display: true,
+            display: false,
             text: chartTitle,
           },
         },
+        scales: {
+          y: {
+            type: 'linear',
+            display: true,
+            position: 'left',
+            title: {
+                display: true,
+                text: yDataSetOneLabel,
+                font: {
+                    size: 20
+                }
+            },
+            ticks: {
+                precision: 0
+            }
+          },
+          y1: {
+            type: 'linear',
+            display: true,
+            position: 'right',
+            grid: {
+              drawOnChartArea: false,
+            },
+            title: {
+                display: true,
+                text: yDataSetTwoLabel,
+                font: {
+                    size: 20
+                }
+            },
+            ticks: {
+                precision: 0
+            }
+          },
+          
+        },
       };
+
       const data={
         labels: xDataSet,
         datasets: [
@@ -168,7 +169,8 @@ const CompareCars = (value, ...props) => {
             data: yDataSetOne,
             borderColor: chartColorsV2[0],
             backgroundColor: chartColors[0],
-              borderWidth: 2,
+            borderWidth: 2,
+            yAxisID: 'y',
           },
           {
             id: 2,
@@ -176,15 +178,8 @@ const CompareCars = (value, ...props) => {
             data: yDataSetTwo,
             borderColor: chartColorsV2[1],
             backgroundColor: chartColors[1],
-              borderWidth: 2,
-          },
-          {
-            id: 3,
-            label: yDataSetThreeLabel,
-            data: yDataSetThree,
-            borderColor: chartColorsV2[2],
-            backgroundColor: chartColors[2],
-              borderWidth: 2,
+            borderWidth: 2,
+            yAxisID: 'y1',
           },
           
         ],
@@ -280,6 +275,7 @@ const CompareCars = (value, ...props) => {
 
     useEffect(() => {
         async function getFilteredCarsData(){
+            // console.log('Data Requested')
             const response = await fetch(apiUrl,{
               headers : { 
                 'Content-Type': 'application/json',
@@ -288,30 +284,18 @@ const CompareCars = (value, ...props) => {
             })
             const tableData = await response.json();
             const obj = JSON.parse(tableData);
-            console.log(obj);
             setRows(obj);
           }
           getFilteredCarsData()
+          
     }, dependencyArray)
-    console.log('rerender')
     useEffect(()=>{
-            const xDataSetTemp = []
-            const yDataSetOneTemp = []
-            const yDataSetTwoTemp = []
-            const yDataSetThreeTemp = []
+        // console.log('Chart Data Updated')
+            setXDataSet(rows.map((obj)=>{return obj[xTitle]}))
+            setYDataSetOne(rows.map((obj)=>{return obj[yDataSetOneLabel]}))
+            setYDataSetTwo(rows.map((obj)=>{return obj[yDataSetTwoLabel]}))
 
-            rows.map((obj)=> {
-                xDataSetTemp.push(obj[xTitle])
-                yDataSetOneTemp.push(obj[yDataSetOneLabel])
-                yDataSetTwoTemp.push(obj[yDataSetTwoLabel])
-                yDataSetThreeTemp.push(obj[yDataSetThreeLabel])
-            })
-            setXDataSet(xDataSetTemp)
-            setYDataSetOne(yDataSetOneTemp)
-            setYDataSetTwo(yDataSetTwoTemp)
-            setYDataSetThree(yDataSetThreeTemp)
-
-    },[rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel, yDataSetThreeLabel])
+    },[rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel])
 
 
 
@@ -327,10 +311,6 @@ const CompareCars = (value, ...props) => {
 
     const handleYDataSetTwoLabel = (event) => {
         setYDataSetTwoLabel(event.target.value);
-    };
-
-    const handleYDataSetThreeLabel = (event) => {
-        setYDataSetThreeLabel(event.target.value);
     };
 
     
@@ -350,7 +330,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleMake}
             >
                 {MANUFACTURER_LIST.map(name => (
-                    <MenuItem value={name}>{name}</MenuItem>
+                    <MenuItem value={name} key={name}>{name}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -367,7 +347,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleFuelType}
             >
                 {FUEL_TYPE_LIST.map(fuelType => (
-                    <MenuItem value={fuelType}>{fuelType}</MenuItem>
+                    <MenuItem value={fuelType} key={fuelType}>{fuelType}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -385,7 +365,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleTransmission}
             >
                 {TRANSMISSION_LIST.map(transmission => (
-                    <MenuItem value={transmission}>{transmission}</MenuItem>
+                    <MenuItem value={transmission} key={transmission}>{transmission}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -403,7 +383,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleOrderBy}
             >
                 {ORDER_BY_LIST.map(orderBy => (
-                    <MenuItem value={orderBy}>{orderBy}</MenuItem>
+                    <MenuItem value={orderBy} key={orderBy}>{orderBy}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -492,7 +472,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleXDataSet}
             >
                 {PROPERTIES_LIST.map(itm => (
-                    <MenuItem value={itm}>{itm}</MenuItem>
+                    <MenuItem value={itm} key={itm}>{itm}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -510,7 +490,7 @@ const CompareCars = (value, ...props) => {
                 onChange={handleYDataSetOneLabel}
             >
                 {Y_DATA_LIST.map(itm => (
-                    <MenuItem value={itm}>{itm}</MenuItem>
+                    <MenuItem value={itm} key={itm}>{itm}</MenuItem>
                 ))}
             </Select>
         </FormControl>
@@ -528,34 +508,18 @@ const CompareCars = (value, ...props) => {
                 onChange={handleYDataSetTwoLabel}
             >
                 {Y_DATA_LIST.map(itm => (
-                    <MenuItem value={itm}>{itm}</MenuItem>
+                    <MenuItem value={itm}  key={itm}>{itm}</MenuItem>
                 ))}
             </Select>
         </FormControl>
         </FilterContainer>
 
-        <FilterContainer>
-        <FormControl className='select-customize'>
-            {/*Select Yaxis data se 3 */}
-            <InputLabel id="dataset-three-select-label">DATASET 3</InputLabel>
-            <Select
-                labelId="dataset-three-select-label"
-                id="dataset-three"
-                value={yDataSetThreeLabel}
-                label="DATASET 3"
-                onChange={handleYDataSetThreeLabel}
-            >
-                {Y_DATA_LIST.map(itm => (
-                    <MenuItem value={itm}>{itm}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-        </FilterContainer>
+    
     </Filters>
     <ChartDrawerContainer>
         {chartType==CHART_TYPES.LINE && <Line options={options} data={data}/>}
         {chartType==CHART_TYPES.BAR && <Bar options={options} data={data} />}
-        {/* {chartType==CHART_TYPES.PIE && <Pie options={options} data={data} />} */}
+
     </ChartDrawerContainer>
     </Box>
 
@@ -606,11 +570,6 @@ const CompareCars = (value, ...props) => {
         </TableBody>
       </Table>
     </TableContainer>
-
-    
-
-
-        
     </Container>
   )
 }

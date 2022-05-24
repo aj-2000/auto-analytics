@@ -10,6 +10,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { BASE_URL } from '../../consts/urls';
+import { chartColors } from '../../consts/colors';
 
 
 ChartJS.register(
@@ -84,12 +85,12 @@ export function QueryThreeComponent() {
           {
             label: '2019 Sales',
             data: seriesOne,
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            backgroundColor: chartColors[0],
           },
           {
             label: '2020 Sales',
             data: seriesTwo,
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
+            backgroundColor: chartColors[1],
           },
         ],
       };

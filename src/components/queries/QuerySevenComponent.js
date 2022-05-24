@@ -123,7 +123,7 @@ export function QuerySevenComponent() {
                     display: true,
                     text: 'Sales',
                     font: {
-                        size: 15
+                        size: 15,
                     }
                 },
                 ticks: {
@@ -133,7 +133,7 @@ export function QuerySevenComponent() {
             xAxes: {
                 title: {
                     display: true,
-                    text: 'Month',
+                    text: 'Months',
                     font: {
                         size: 15
                     }
@@ -153,27 +153,36 @@ export function QuerySevenComponent() {
             label: 'Economy',
             data: economy,
             backgroundColor: chartColors[0],
+            borderColor: chartColorsV2[0],
           },
           {
             label: 'Luxury',
             data: luxury,
             backgroundColor: chartColors[1],
+            borderColor: chartColorsV2[1],
+
           },
           {
             label: 'Mid Range',
             data: midRange,
             backgroundColor: chartColors[2],
+            borderColor: chartColorsV2[2],
+
           },
           {
             label: 'Ultra Luxury',
             data: ultraLuxury,
             backgroundColor: chartColors[3],
+            borderColor: chartColorsV2[3],
+
+
           },
           {
             label: 'Economy SMA',
             data: economySMA,
             borderDash: [10,5],
             backgroundColor: chartColorsV1[0],
+
           },
           {
             label: 'Luxury SMA',

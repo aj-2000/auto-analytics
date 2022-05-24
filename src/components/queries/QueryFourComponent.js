@@ -61,7 +61,7 @@ export function QueryFourComponent() {
             yAxes: {
                 title: {
                     display: true,
-                    text: 'Percent Change',
+                    text: 'Percent Change Between 2019 and 2020 Sales',
                     font: {
                         size: 15
                     }
@@ -75,7 +75,7 @@ export function QueryFourComponent() {
                     display: true,
                     text: 'Brand',
                     font: {
-                        size: 15
+                        size: 20
                     }
                 }
             }
