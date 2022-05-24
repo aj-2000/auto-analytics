@@ -1,9 +1,0 @@
-.overview-section {
-  display: flex;
-  flex: 1;
-  background-color: white;
-  align-items: center;
-  justify-content: space-evenly;
-  border-bottom: 2px solid #e6e6e6;
-  margin: 12px;
-}

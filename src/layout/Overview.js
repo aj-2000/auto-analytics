@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../consts/urls";
 import Leaderboard from "../components/LeaderBoard";
-import styles from "./Overview.module.css";
 import Sales from "../components/Sales";
 
+import { LinearProgress } from "@mui/material";
+import { Grid } from "@mui/material";
+import { Box } from "@mui/system";
 const Overview = (props) => {
   const [salesData, setSalesData] = useState([]);
   const [leaders, setLeaders] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  // const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getOverviewData() {
@@ -30,42 +31,48 @@ const Overview = (props) => {
     }
     getOverviewData();
   }, []);
-  // fetch(`http://127.0.0.1:8000/overview/`)
-  // .then(res => res.json())
-  // .then(result => {
-  //     setLeaders({
-  //         'topBrandYear': result.top_brand_of_year,
-  //         'topBrandMonth': result.top_brand_of_month,
-  //     });
-  //     // setSalesData(JSON.parse(result.sales))
-  //     console.log(JSON.parse(result.sales))
-  //     setIsLoaded(true);
-  // },
-  // (error) => {
-  //     console.log(error);
-  //     setIsLoaded(true);
-  //     setError(error);
-  // });
-  // }, []);
 
   if (!isLoaded) {
-    return <div className={styles["overview-loading"]}>Loading...</div>;
+    return <LinearProgress />;
   }
+
   return (
-    <div className={styles["overview-section"]}>
-      <Sales
-        title="Sold this year"
-        currentValue={salesData["2022"]}
-        previousValue={salesData["2021"]}
-      />
-      <Sales
-        title="Sold this month"
-        currentValue={salesData["May_2022"]}
-        previousValue={salesData["April_2022"]}
-      />
-      <Leaderboard title="Top Brand this year" value={leaders.topBrandYear} />
-      <Leaderboard title="Top Brand this month" value={leaders.topBrandMonth} />
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-around"
+        alignItems="center"
+        spacing={2}
+      >
+        <Grid item>
+          <Sales
+            title="Sold this year"
+            currentValue={salesData["2022"]}
+            previousValue={salesData["2021"]}
+          />
+        </Grid>
+        <Grid item>
+          <Sales
+            title="Sold this month"
+            currentValue={salesData["May_2022"]}
+            previousValue={salesData["April_2022"]}
+          />
+        </Grid>
+        <Grid item>
+          <Leaderboard
+            title="Top Brand this year"
+            value={leaders.topBrandYear}
+          />
+        </Grid>
+        <Grid item>
+          <Leaderboard
+            title="Top Brand this month"
+            value={leaders.topBrandMonth}
+          />
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
