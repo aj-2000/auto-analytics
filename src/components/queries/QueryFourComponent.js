@@ -10,7 +10,6 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { BASE_URL } from "../../consts/urls";
-import { ContactlessOutlined } from "@mui/icons-material";
 import { chartColors } from "../../consts/colors";
 
 ChartJS.register(
