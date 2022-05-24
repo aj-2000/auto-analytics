@@ -143,7 +143,7 @@ const CompareCars = (value, ...props) => {
                 },
                 ticks: {
                     font: {
-                        size: 8,
+                        size: 15,
                     }
                 }
             },
