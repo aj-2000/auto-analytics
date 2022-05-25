@@ -3,6 +3,7 @@ import Navbar from "./layout/Navbar";
 import { useLocation } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import DataAnalyzer from "./pages/DataAnalyzer";
+import SalesForecast from "./pages/SalesForecast";
 
 function App() {
   let location = useLocation();
@@ -14,6 +15,7 @@ function App() {
           {(location.pathname === "/" ||
             location.pathname === "/dashboard") && <Dashboard />}
           {location.pathname === "/analyzer" && <DataAnalyzer />}
+          {location.pathname === "/forecast" && <SalesForecast />}
         </div>
       </Stack>
     </Box>
