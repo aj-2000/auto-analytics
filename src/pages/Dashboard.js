@@ -14,6 +14,8 @@ import { QuerySevenComponent } from "../components/queries/QuerySevenComponent";
 import QueryNineComponent from "../components/queries/QueryNineComponent";
 import Overview from "../layout/Overview";
 import QueryEightComponent from "../components/queries/QueryEightComponent";
+import ModelAccuracyChart from "../components/ModelAccuracyChart";
+import { demoCSVFileURL } from "../consts/urls";
 const Dashboard = () => {
   return (
     <Stack>
@@ -50,7 +52,7 @@ const Dashboard = () => {
           >
             <DataContainer
               title="RIGHT TIME TO LAUNCH CAR USING SIMPLE MOVING AVERAGE(SMA)"
-              queryComponent={<QuerySevenComponent />}
+              queryComponent={<ModelAccuracyChart apiUrl="http://127.0.0.1:8000/forecast/1/1/5/5/" fileURL={demoCSVFileURL} />}
             />
           </Grid>
 

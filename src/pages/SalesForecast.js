@@ -22,9 +22,12 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-
 import Modal from "@mui/material/Modal";
 import unixTimeStampToDate from '../utility/UnixTimeStampToDate'
+import {demoCSVFileURL} from "../consts/urls"
+import { chartColors, chartColorsV2 } from "../consts/colors";
+import ModelAccuracyChart from "../components/ModelAccuracyChart";
+import SalesForecastChart from "../components/SalesForecastChart";
 
 ChartJS.register(
   CategoryScale,
@@ -35,8 +38,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-
 
 const style = {
   position: "absolute",
@@ -49,46 +50,22 @@ const style = {
   p: 4,
 };
 
-const demoCSVFileURL =
-  "https://raw.githubusercontent.com/aj-2000/autoapi/main/App/Total_Car_Sales.csv";
-
-const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-];
-
-const optionsForecast = {
+//Options for Actual vs Predited chart
+const optionsActualvsPreditedChart = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top",
+      position: 'top',
     },
     title: {
       display: true,
-      text: "Sales Forecasting",
+      text: 'ACTUAL vs PREDICTED Values',
     },
   },
 };
 
+const labels = ['a', 'b', 'c', 'd', 'e', 'f']
+//DATA MODEL ACCURACY STYLES
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -98,16 +75,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SalesForecast = () => {
+  const [updateModelAccuracyChart, setUpdateModelAccuracyChart] = useState(false)
+  const [isModelFitted, setIsModelFitted] = useState(false)
   const [rootMeanSquaredError, setRootMeanSquaredError] = useState(null);
   const [meanAbsolutePercentageError, setMeanAbsolutePercentageError] =
     useState(null);
   const [residualSumOfSquares, setResidualSumOfSquares] = useState(null);
   const [isSeriesStationary, setIsSeriesStationary] = useState(null);
-  const [forecastValues, setForecastValues] = useState([]);
-  const [forecastDates, setForecastDates] = useState([]);
-  const [actualValues, setActualValues] = useState([]);
-  const [actualDates, setActualDates] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-  const [predictedValues, setPredictedValues] = useState([]);
   const [fileURL, setFileURL] = useState(demoCSVFileURL);
   const [pValue, setPValue] = useState(1);
   const [qValue, setQValue] = useState(1);
@@ -116,32 +90,8 @@ const SalesForecast = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const labelsActual = [
-    "Data point 1",
-    "Data point 2",
-    "Data point 3",
-    "Data point 4",
-    "Data point 5",
-    "Data point 6",
-    "Data point 7",
-    "Data point 8",
-    "Data point 9",
-    "Data point 10",
-    "Data point 11",
-    "Data point 12",
-    "Data point 13",
-    "Data point 14",
-  ];
-  const labelsForecast = [
-    "Forecast Data point 1",
-    "Forecast Data point 2",
-    "Forecast Data point 3",
-    "Forecast Data point 4",
-    "Forecast Data point 5",
-    "Forecast Data point 6",
-    "Forecast Data point 7",
-  ];
-  const [open, setOpen] = React.useState(false);
+
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleCSVFileURL = (event) => {
@@ -159,7 +109,11 @@ const SalesForecast = () => {
   const handleNumberOfForecasts = (event) => {
     setNumberOfForecasts(event.target.value);
   };
+
+  const apiUrl = `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${nLags}/`
+
   async function fitModelWithData() {
+    
     setIsLoading(true);
     setError(null);
     const requestOptions = {
@@ -172,72 +126,30 @@ const SalesForecast = () => {
     };
     try {
       const fetchResponse = await fetch(
-        `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${nLags}/`,
+        apiUrl,
         requestOptions
       );
       const data = await fetchResponse.json();
       const parsedObject = JSON.parse(data);
-      setActualValues(Object.values(JSON.parse(parsedObject["ACTUAL"])));
-      setPredictedValues(Object.values(JSON.parse(parsedObject["PREDICTED"])));
-      setForecastValues(Object.values(JSON.parse(parsedObject["FORECAST"])));
       parsedObject["IS_STATIONARY"] === "True"
         ? setIsSeriesStationary("YES")
         : setIsSeriesStationary("NO");
       setRootMeanSquaredError(parsedObject["RMSE"]);
       setMeanAbsolutePercentageError(parsedObject["MAPE"]);
       setResidualSumOfSquares(parsedObject["RSS"]);
-      setActualDates(
-        Object.keys(JSON.parse(parsedObject["ACTUAL"])).map((unixTimeStamp) =>
-          unixTimeStampToDate(parseInt(unixTimeStamp))
-        )
-      );
-      setForecastDates(
-        Object.keys(JSON.parse(parsedObject["FORECAST"])).map((unixTimeStamp) =>
-          unixTimeStampToDate(parseInt(unixTimeStamp))
-        )
-      );
-      console.log(parsedObject);
+      setIsModelFitted(true)
+      setUpdateModelAccuracyChart(!updateModelAccuracyChart)
+      
     } catch (e) {
       setError(e);
+      setIsModelFitted(false);
       console.log(e);
     }
     setIsLoading(false);
   }
 
-  console.log(actualDates);
-  const dataActualvsPredicted = {
-    labelsActual,
-    datasets: [
-      {
-        label: "Actual Values",
-        data: predictedValues,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Predicted Values",
-        data: actualValues,
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
-  };
-
-  useEffect(() => {
-    fitModelWithData();
-  }, []);
-  const dataForecast = {
-    labelsForecast,
-    datasets: [
-      {
-        label: "FORECASTED VALUES",
-        data: forecastValues,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-    ],
-  };
   return (
+    
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} flexGrow={1}>
         <Grid item xs={12}>
@@ -315,7 +227,8 @@ const SalesForecast = () => {
           <Item>IS SERIES STATIONARY? : <strong>{isSeriesStationary}</strong></Item>
         </Grid>
         <Grid item xs={12} lg={8}>
-          <Line options={optionsForecast} data={dataActualvsPredicted} />
+         {/* ModelAccuracyChart */}
+          {isModelFitted && <ModelAccuracyChart apiUrl={apiUrl} updateChart={updateModelAccuracyChart} fileURL={fileURL}/>}
         </Grid>
         <Grid item xs={12} lg={4}>
           <Stack spacing={2}>
@@ -324,7 +237,6 @@ const SalesForecast = () => {
             </Button>
             {isLoading && <LinearProgress />}
             {error !== null && <Alert severity="error"> {error.message}</Alert>}
-
             <Button variant="outlined" onClick={handleOpen}>
               VIEW FORECAST
             </Button>
@@ -336,7 +248,7 @@ const SalesForecast = () => {
               aria-describedby="modal-modal-description"
             >
               <Box sx={style}>
-                <Line options={optionsForecast} data={dataForecast} />
+                <SalesForecastChart apiUrl={apiUrl} fileURL={fileURL} />
               </Box>
             </Modal>
             <Alert icon={<QuestionMarkIcon />} severity="success">
