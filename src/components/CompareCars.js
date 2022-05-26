@@ -18,9 +18,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-
+import Grid from "@mui/material/Grid";
 import { Line, Bar } from "react-chartjs-2";
-
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
@@ -47,7 +46,9 @@ import {
 import { Box } from "@mui/material";
 import { BASE_URL } from "../consts/urls";
 import { chartColors, chartColorsV2 } from "../consts/colors";
+import { viewCharts } from "../redux/tabsSlice";
 
+//Reponsible for table design
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -68,38 +69,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-const Container = sty.div`
-  display:flex;
-  flex-direction: column;
-`;
-const Filters = sty.div`
-  display:flex;
 
-`;
 
-const FilterContainer = sty.div`
-  display: flex;
-  align-items: center;
-  margin:10px;
-
-`;
-const AlertContainer = sty.div`
-  margin: 0 10px 10px 10px;
-  
-`;
-
-const ChartDrawerContainer = sty.div`
-
-  height:67vh;
-  width:auto;
-`;
 
 const CHART_TYPES = {
   LINE: "line",
   BAR: "bar",
 };
 
-const CompareCars = (value, ...props) => {
+const CompareCars = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
   const tabs = useSelector((state) => state.tabs);
@@ -299,8 +277,10 @@ const CompareCars = (value, ...props) => {
   };
 
   useEffect(() => {
+    //fix: synchorization of states between toggle component and redux store tabs 
+     dispatch(viewCharts());
+    //
     async function getFilteredCarsData() {
-      // console.log('Data Requested')
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -314,7 +294,6 @@ const CompareCars = (value, ...props) => {
     getFilteredCarsData();
   }, dependencyArray);
   useEffect(() => {
-    // console.log('Chart Data Updated')
     setXDataSet(
       rows.map((obj) => {
         return obj[xTitle];
@@ -345,13 +324,14 @@ const CompareCars = (value, ...props) => {
   };
 
   return (
-    <Container>
-      <Filters>
-        <FilterContainer>
-          <FormControl className="select-customize">
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={6} lg={3}>
+        <FormControl fullWidth>
             {/* //Manufacturer */}
             <InputLabel id="make-select-label">Manufacturer</InputLabel>
             <Select
+            fullWidth
               labelId="make-select-label"
               id="make"
               value={filters.make}
@@ -365,9 +345,10 @@ const CompareCars = (value, ...props) => {
               ))}
             </Select>
           </FormControl>
-        </FilterContainer>
-        <FilterContainer>
-          <FormControl>
+
+        </Grid>
+        <Grid item xs={6} lg={3}>
+        <FormControl fullWidth>
             {/* //Fuel_Type */}
             <InputLabel id="fuelType-select-label">Fuel_Type</InputLabel>
             <Select
@@ -384,10 +365,10 @@ const CompareCars = (value, ...props) => {
               ))}
             </Select>
           </FormControl>
-        </FilterContainer>
-
-        <FilterContainer>
-          <FormControl>
+          
+        </Grid>
+        <Grid item xs={6} lg={3}>
+        <FormControl fullWidth>
             {/* //Transmission */}
             <InputLabel id="transmission-select-label">Transmission</InputLabel>
             <Select
@@ -404,10 +385,10 @@ const CompareCars = (value, ...props) => {
               ))}
             </Select>
           </FormControl>
-        </FilterContainer>
-
-        <FilterContainer>
-          <FormControl>
+          
+        </Grid>
+        <Grid item xs={6} lg={3}>
+        <FormControl fullWidth>
             {/* Order by */}
             <InputLabel id="orderBy-select-label">Order By</InputLabel>
             <Select
@@ -424,81 +405,88 @@ const CompareCars = (value, ...props) => {
               ))}
             </Select>
           </FormControl>
-        </FilterContainer>
-
-        <FilterContainer>
-          {/* Price >= */}
-          <TextField
+          
+        </Grid>
+        <Grid item xs={6} lg={2}>
+           {/* Price >= */}
+           <TextField
+           fullWidth
             id="outlined-basic"
             onChange={handlePrice}
             label="Price >="
             variant="outlined"
           />
-        </FilterContainer>
-        <FilterContainer>
+          
+        </Grid>
+        <Grid item xs={6} lg={2}>
           {/* Year >= */}
           <TextField
+          fullWidth
             id="outlined-basic"
             onChange={handleYear}
             label="Year >="
             variant="outlined"
           />
-        </FilterContainer>
-
-        <FilterContainer>
+          
+        </Grid>
+        <Grid item xs={6} lg={2}>
           {/* Mileage(KM/L) >= */}
           <TextField
+          fullWidth
             id="outlined-basic"
             onChange={handleMileageKML}
             label="Mileage(KM/L) >="
             variant="outlined"
           />
-        </FilterContainer>
-
-        <FilterContainer>
+          
+        </Grid>
+        <Grid item xs={6} lg={2}>
           {/* Engine(CC) >= */}
           <TextField
+          fullWidth
             id="outlined-basic"
             onChange={handleEngineCC}
             label="Engine(CC) >="
             variant="outlined"
           />
-        </FilterContainer>
-
-        <FilterContainer>
+          
+        </Grid>
+        <Grid item xs={6} lg={2}> 
           {/* Power >= */}
           <TextField
+          fullWidth
             id="outlined-basic"
             onChange={handlePower}
             label="Power >="
             variant="outlined"
           />
-        </FilterContainer>
-
-        <FilterContainer>
-          {/* Seats >= */}
-          <TextField
+          
+        </Grid>
+        <Grid item xs={6} lg={2}>
+           {/* Seats >= */}
+           <TextField
+           fullWidth
             id="outlined-basic"
             onChange={handleSeats}
             label="Seats >="
             variant="outlined"
           />
-        </FilterContainer>
-
-        <FilterContainer>
+          
+        </Grid>
+        <Grid item xs={12} lg={12}>
           {/* NumberOfRecords >= */}
           <TextField
+            fullWidth
             id="outlined-basic"
             defaultValue={filters.numberOfRecords}
             onChange={handleNumberOfRecords}
             label="Max Records"
             variant="outlined"
           />
-        </FilterContainer>
-      </Filters>
-
-      <AlertContainer>
-        {/* Alert */}
+          
+        </Grid>
+        <Grid item xs={12}>
+           {/* Alert */}
         {rows.length === 0 && (
           <Alert severity="info">
             <b>No matching records found.</b>
@@ -510,13 +498,11 @@ const CompareCars = (value, ...props) => {
             <i>Set Max Records to 0 to view all matching records.</i>
           </Alert>
         )}
-      </AlertContainer>
-
-      {/* Data Visualizer */}
-      <Box sx={{ display: tabs.displayCharts }}>
-        <Filters>
-          <FilterContainer>
-            <ToggleButtonGroup
+          
+        </Grid>
+        <Grid item xs={12}>
+        <ToggleButtonGroup
+            fullWidth
               color="primary"
               value={chartType}
               exclusive
@@ -526,19 +512,21 @@ const CompareCars = (value, ...props) => {
               <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
               {/* <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton> */}
             </ToggleButtonGroup>
-          </FilterContainer>
-          <FilterContainer>
-            {/*Chart Title */}
-            <TextField
+          
+        </Grid>
+        <Grid item xs={12}>
+          {/*Chart Title */}
+          <TextField
+            fullWidth
               id="outlined-basic"
               onChange={handleChartTitle}
               label="Chart Title"
               variant="outlined"
             />
-          </FilterContainer>
-
-          <FilterContainer>
-            <FormControl className="select-customize">
+          
+        </Grid>
+        <Grid item xs={4}>
+        <FormControl fullWidth >
               {/*Select Xaxis Data Set */}
               <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
               <Select
@@ -555,10 +543,10 @@ const CompareCars = (value, ...props) => {
                 ))}
               </Select>
             </FormControl>
-          </FilterContainer>
-
-          <FilterContainer>
-            <FormControl className="select-customize">
+          
+        </Grid>
+        <Grid item xs={4}>
+        <FormControl fullWidth>
               {/*Select Yaxis data set one */}
               <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
               <Select
@@ -575,10 +563,11 @@ const CompareCars = (value, ...props) => {
                 ))}
               </Select>
             </FormControl>
-          </FilterContainer>
+        </Grid>
+        
 
-          <FilterContainer>
-            <FormControl className="select-customize">
+        <Grid item  xs={4}>
+        <FormControl fullWidth>
               {/*Select Yaxis data se 2 */}
               <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
               <Select
@@ -595,24 +584,24 @@ const CompareCars = (value, ...props) => {
                 ))}
               </Select>
             </FormControl>
-          </FilterContainer>
-        </Filters>
-        <ChartDrawerContainer>
-          {chartType == CHART_TYPES.LINE && (
+          
+        </Grid>
+        <Grid item sx={{ display: tabs["displayCharts"] }} xs={12}>
+        {chartType == CHART_TYPES.LINE && (
             <Line options={options} data={data} />
           )}
           {chartType == CHART_TYPES.BAR && (
             <Bar options={options} data={data} />
           )}
-        </ChartDrawerContainer>
-      </Box>
+          
+        </Grid>
 
-      {/* Table Rendering  */}
-      <TableContainer
+        <Grid item xs={12}>
+        <TableContainer
         sx={{ display: tabs["displayRecords"] }}
         component={Paper}
       >
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <StyledTableRow>
               <StyledTableCell align="center"> Name </StyledTableCell>
@@ -665,7 +654,10 @@ const CompareCars = (value, ...props) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+          
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 

@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import TableViewIcon from "@mui/icons-material/TableView";
 import { Box } from "@mui/system";
+import Grid from "@mui/material/Grid";
 import CompareCars from "../components/CompareCars";
 import { useDispatch } from "react-redux";
 import { viewCharts, viewRecords } from "../redux/tabsSlice";
@@ -20,25 +21,31 @@ export default function IconTabs() {
   };
 
   return (
-    <Box>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="icon position tabs example"
-        centered
-      >
-        <Tab
-          icon={<AutoGraphIcon />}
-          iconPosition="start"
-          label="chart drawer"
-        />
-        <Tab
-          icon={<TableViewIcon />}
-          iconPosition="start"
-          label="view records"
-        />
-      </Tabs>
-      <CompareCars />
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label="icon position tabs example"
+            centered
+          >
+            <Tab
+              icon={<AutoGraphIcon />}
+              iconPosition="start"
+              label="chart drawer"
+            />
+            <Tab
+              icon={<TableViewIcon />}
+              iconPosition="start"
+              label="view records"
+            />
+          </Tabs>
+        </Grid>
+        <Grid item xs={12}>
+          <CompareCars />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

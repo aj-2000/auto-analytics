@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import { Insights } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -123,7 +122,8 @@ const Navbar = () => {
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontFamily: "monospace",
-              fontWeight: 700,
+              fontWeight: {xs:"600", md: "700"},
+              fontSize: {xs:"1rem", md: "2rem"},
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",

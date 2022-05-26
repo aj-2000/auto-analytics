@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 import { Paper } from "@mui/material/";
-import faker from "@faker-js/faker";
 import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
@@ -12,7 +11,6 @@ import AlertTitle from "@mui/material/AlertTitle";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import LinearProgress from "@mui/material/LinearProgress";
 import { BASE_URL } from "../consts/urls";
-import axios from "axios";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,8 +23,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import unixTimeStampToDate from '../utility/UnixTimeStampToDate'
 
 ChartJS.register(
   CategoryScale,
@@ -38,17 +36,7 @@ ChartJS.register(
   Legend
 );
 
-function unixTimeStampToDate(unixTimeStamp) {
-  // Create a new JavaScript Date object based on the timestamp
-  // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-  let date = new Date(unixTimeStamp);
-  // Hours part from the timestamp
-  let dateString = date.toString().substring(0, 15);
-  //short time part from the timestamp
-  date = new Date(dateString);
-  let finalDateSting = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-  return finalDateSting;
-}
+
 
 const style = {
   position: "absolute",
@@ -88,18 +76,6 @@ const labels = [
   "September",
 ];
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "ACTUAL DATASET VALUES  vs  PREDICTED VALUES",
-    },
-  },
-};
 const optionsForecast = {
   responsive: true,
   plugins: {
@@ -122,15 +98,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SalesForecast = () => {
-  const [rootMeanSquaredError, setRootMeanSquaredError] = useState(137);
+  const [rootMeanSquaredError, setRootMeanSquaredError] = useState(null);
   const [meanAbsolutePercentageError, setMeanAbsolutePercentageError] =
-    useState(15);
-  const [residualSumOfSquares, setResidualSumOfSquares] = useState(34343);
-  const [isSeriesStationary, setIsSeriesStationary] = useState("YES");
+    useState(null);
+  const [residualSumOfSquares, setResidualSumOfSquares] = useState(null);
+  const [isSeriesStationary, setIsSeriesStationary] = useState(null);
   const [forecastValues, setForecastValues] = useState([]);
   const [forecastDates, setForecastDates] = useState([]);
   const [actualValues, setActualValues] = useState([]);
-  const [actualDates, setActualDates] = useState([]);
+  const [actualDates, setActualDates] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const [predictedValues, setPredictedValues] = useState([]);
   const [fileURL, setFileURL] = useState(demoCSVFileURL);
   const [pValue, setPValue] = useState(1);
@@ -140,7 +116,31 @@ const SalesForecast = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
+  const labelsActual = [
+    "Data point 1",
+    "Data point 2",
+    "Data point 3",
+    "Data point 4",
+    "Data point 5",
+    "Data point 6",
+    "Data point 7",
+    "Data point 8",
+    "Data point 9",
+    "Data point 10",
+    "Data point 11",
+    "Data point 12",
+    "Data point 13",
+    "Data point 14",
+  ];
+  const labelsForecast = [
+    "Forecast Data point 1",
+    "Forecast Data point 2",
+    "Forecast Data point 3",
+    "Forecast Data point 4",
+    "Forecast Data point 5",
+    "Forecast Data point 6",
+    "Forecast Data point 7",
+  ];
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -187,10 +187,14 @@ const SalesForecast = () => {
       setMeanAbsolutePercentageError(parsedObject["MAPE"]);
       setResidualSumOfSquares(parsedObject["RSS"]);
       setActualDates(
-        Object.keys(JSON.parse(parsedObject["ACTUAL"])).map((unixTimeStamp)=>unixTimeStampToDate(parseInt(unixTimeStamp)))
+        Object.keys(JSON.parse(parsedObject["ACTUAL"])).map((unixTimeStamp) =>
+          unixTimeStampToDate(parseInt(unixTimeStamp))
+        )
       );
       setForecastDates(
-        Object.keys(JSON.parse(parsedObject["FORECAST"])).map((unixTimeStamp)=>unixTimeStampToDate(parseInt(unixTimeStamp)))
+        Object.keys(JSON.parse(parsedObject["FORECAST"])).map((unixTimeStamp) =>
+          unixTimeStampToDate(parseInt(unixTimeStamp))
+        )
       );
       console.log(parsedObject);
     } catch (e) {
@@ -200,30 +204,9 @@ const SalesForecast = () => {
     setIsLoading(false);
   }
 
-  // function fitModelData() {
-  //   setIsLoading(true);
-  //   let bodyFormData = new FormData();
-  //   bodyFormData.append("file_url", fileURL);
-  //   axios({
-  //     method: "post",
-  //     url: `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${nLags}`,
-  //     data: bodyFormData,
-  //     headers: { "Content-Type": "multipart/form-data" },
-  //   })
-  //     .then(function (response) {
-  //       //handle success
-  //       console.log(response.data);
-  //     })
-  //     .catch(function (response) {
-  //       //handle error
-  //       // setError(response.error);
-  //       console.log(response);
-  //     });
-  //     setIsLoading(false);
-  // }
   console.log(actualDates);
-  const data = {
-    actualDates,
+  const dataActualvsPredicted = {
+    labelsActual,
     datasets: [
       {
         label: "Actual Values",
@@ -240,9 +223,11 @@ const SalesForecast = () => {
     ],
   };
 
-  useEffect(()=>{setActualDates(actualDates)},[actualDates]);
+  useEffect(() => {
+    fitModelWithData();
+  }, []);
   const dataForecast = {
-    forecastDates,
+    labelsForecast,
     datasets: [
       {
         label: "FORECASTED VALUES",
@@ -255,12 +240,12 @@ const SalesForecast = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} flexGrow={1}>
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <Alert icon={false} severity="info">
             ENTER DATASET DETAILS
           </Alert>
         </Grid>
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             onChange={handleCSVFileURL}
@@ -270,7 +255,7 @@ const SalesForecast = () => {
             defaultValue={demoCSVFileURL}
           />
         </Grid>
-        <Grid item sm={4}>
+        <Grid item xs={6} md={3}>
           <TextField
             fullWidth
             onChange={handlePValue}
@@ -280,7 +265,7 @@ const SalesForecast = () => {
             defaultValue="1"
           />
         </Grid>
-        <Grid item sm={4}>
+        <Grid item xs={6} md={3}>
           <TextField
             fullWidth
             onChange={handleQValue}
@@ -290,7 +275,7 @@ const SalesForecast = () => {
             defaultValue="1"
           />
         </Grid>
-        <Grid item sm={4}>
+        <Grid item xs={6} md={3}>
           <TextField
             fullWidth
             onChange={handleNLagsValue}
@@ -300,44 +285,46 @@ const SalesForecast = () => {
             defaultValue="9"
           />
         </Grid>
-        <Grid item sm={4}>
+        <Grid item xs={6} md={3}>
           <TextField
             fullWidth
             onChange={handleNumberOfForecasts}
             id="number_of_forecasts"
-            label="nLags Value"
+            label="Number of Forecasts"
             helperText={""}
-            defaultValue="9"
+            defaultValue="5"
           />
         </Grid>
-        <Grid item sm={12}>
+        <Grid item xs={12}>
           <Alert icon={false} severity="info">
             MODEL ACCURACY DETAILS
           </Alert>
         </Grid>
-        <Grid item xs={6}>
-          <Item>ROOT MEAN SQUARED ERROR : {rootMeanSquaredError}</Item>
+        <Grid item xs={12} md={6}>
+          <Item>ROOT MEAN SQUARED ERROR : <strong>{rootMeanSquaredError}</strong></Item>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Item>
-            MEAN ABSOLUTE PERCENTAGE ERROR : {meanAbsolutePercentageError}%
+            MEAN ABSOLUTE PERCENTAGE ERROR : <strong>{meanAbsolutePercentageError}%</strong>
           </Item>
         </Grid>
-        <Grid item xs={6}>
-          <Item>RESIDUAL SUM OF SQUARES : {residualSumOfSquares}</Item>
+        <Grid item xs={12} md={6}>
+          <Item>RESIDUAL SUM OF SQUARES : <strong>{residualSumOfSquares}</strong></Item>
         </Grid>
-        <Grid item xs={6}>
-          <Item>IS SERIES STATIONARY? : {isSeriesStationary}</Item>
+        <Grid item xs={12} md={6}>
+          <Item>IS SERIES STATIONARY? : <strong>{isSeriesStationary}</strong></Item>
         </Grid>
-        <Grid item xs={8}>
-          <Line options={options} data={data} />
+        <Grid item xs={12} lg={8}>
+          <Line options={optionsForecast} data={dataActualvsPredicted} />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} lg={4}>
           <Stack spacing={2}>
             <Button variant="contained" onClick={fitModelWithData}>
               FIT MODEL WITH DATA
             </Button>
             {isLoading && <LinearProgress />}
+            {error !== null && <Alert severity="error"> {error.message}</Alert>}
+
             <Button variant="outlined" onClick={handleOpen}>
               VIEW FORECAST
             </Button>
@@ -352,7 +339,6 @@ const SalesForecast = () => {
                 <Line options={optionsForecast} data={dataForecast} />
               </Box>
             </Modal>
-            {error !== null && <Alert severity="error"> {error.message}</Alert>}
             <Alert icon={<QuestionMarkIcon />} severity="success">
               <AlertTitle>HOW TO USE?</AlertTitle>
               This is a success alert — <strong>check it out!</strong>

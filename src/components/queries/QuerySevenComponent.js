@@ -24,7 +24,6 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "100vh",
   bgcolor: "background.paper",
   boxShadow: 10,
   p: 4,
@@ -227,8 +226,7 @@ export function QuerySevenComponent() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <QueryTwoComponent/>
-            {/* <InfoContainer>
+            <InfoContainer>
               Criteria:
               <br />
               1. Months sales should be above simple moving average.
@@ -236,7 +234,7 @@ export function QuerySevenComponent() {
               2. Months with larger difference from simple moving average are
               preferred.
             </InfoContainer>
-            <ModalTitle>Predctions For</ModalTitle>
+            <ModalTitle>Predictions For</ModalTitle>
             <ModalItem>
               <Subtitle>Economy</Subtitle>
               <Month>{monthsPrediction[0]}</Month>
@@ -260,7 +258,7 @@ export function QuerySevenComponent() {
               <Month>{monthsPrediction[9]}</Month>
               <Month>{monthsPrediction[10]}</Month>
               <Month>{monthsPrediction[11]}</Month>
-            </ModalItem> */}
+            </ModalItem>
           </Box>
         </Modal>
       </Box>
