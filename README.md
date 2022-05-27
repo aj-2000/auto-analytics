@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# Auto Analytics
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 👋 Introduction
 
-In the project directory, you can run:
+Microsoft Engage Project.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> [Auto Analytics Web App](https://autoanalysis.vercel.app/)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🏗️ How to Set up `Auto Analytics` for Development?
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ⬇️ Clone / Download
 
-### `npm run build`
+```bash
+https://github.com/aj-2000/auto-analytics.git
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Please change the directory after cloning the repository using the `cd <folder-name>` command.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### ⬇️ Install Dependencies
+Next, install the dependencies by running the following command in the `react-play` repo:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
+Or
+  
+```bash
+yarn install
+```
 
-### `npm run eject`
+### 🦄 Start the Development Mode
+Use the following command to start the app in the development mode:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm start
+```
+Or
+  
+```bash
+yarn start
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+It runs the app in the development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The page will reload when you make changes. You may also see any lint errors in the console.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 🧱 Build the App for Production
+Use the following command to build the app for production:
 
-## Learn More
+```bash
+npm run build
+```
+Or
+  
+```bash
+yarn build
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+It builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include the hashes.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🚀 Deploy
 
-### Code Splitting
+You can deploy the app to `Vercel` or `Netlify` with a single click.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<a href="https://vercel.com/new/project?template=https://github.com/atapas/react-play">
+<img src="https://vercel.com/button" height="37.5px" />
+</a>
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/atapas/react-play">
+<img src="https://www.netlify.com/img/deploy/button.svg" height="37.5px" />
+</a>
