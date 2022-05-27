@@ -65,9 +65,9 @@ It builds the app for production to the `build` folder. It correctly bundles Rea
 
 You can deploy the app to `Vercel` or `Netlify` with a single click.
 
-<a href="https://vercel.com/new/project?template=https://github.com/atapas/react-play">
+<a href="https://vercel.com">
 <img src="https://vercel.com/button" height="37.5px" />
 </a>
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/atapas/react-play">
+<a href="https://www.netlify.com">
 <img src="https://www.netlify.com/img/deploy/button.svg" height="37.5px" />
 </a>
