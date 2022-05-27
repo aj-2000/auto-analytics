@@ -30,7 +30,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function QueryTwoComponent() {
+function MostExpensiveCarBrands() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
     async function getQueryTwoData() {
@@ -78,3 +78,5 @@ export default function QueryTwoComponent() {
     </TableContainer>
   );
 }
+
+export default MostExpensiveCarBrands;

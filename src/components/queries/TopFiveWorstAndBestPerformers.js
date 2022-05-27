@@ -21,14 +21,13 @@ ChartJS.register(
   Legend
 );
 
-export function QueryThreeComponent() {
+export function TopFiveWorstAndBestPerformers() {
   const [labels, setLabels] = useState([]);
-  const [seriesOne, setSeriesOne] = useState([]);
-  const [seriesTwo, setSeriesTwo] = useState([]);
+  const [series, setSeries] = useState([]);
 
   useEffect(() => {
-    async function getQueryThreeData() {
-      const apiUrl = `${BASE_URL}/q3/`;
+    async function getQueryFourData() {
+      const apiUrl = `${BASE_URL}/q4/`;
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -36,20 +35,31 @@ export function QueryThreeComponent() {
         },
       });
       const data = await response.json();
-      const obj = JSON.parse(data);
-      setLabels(Object.values(obj.Brand));
-      setSeriesOne(Object.values(obj["2019 sales"]));
-      setSeriesTwo(Object.values(obj["2020 sales"]));
+      const objArray = JSON.parse(data);
+      setLabels(
+        objArray.map((obj) => {
+          return obj.Brand;
+        })
+      );
+      setSeries(
+        objArray.map((obj) => {
+          return obj["Percent Change"];
+        })
+      );
     }
-    getQueryThreeData();
+    getQueryFourData();
   }, []);
+
   const options = {
     responsive: true,
     scales: {
+      legend: {
+        display: false, //This will do the task
+      },
       yAxes: {
         title: {
           display: true,
-          text: "Sales Volume",
+          text: "Percent Change from previous yeaer sales",
           font: {
             size: 15,
           },
@@ -71,6 +81,7 @@ export function QueryThreeComponent() {
     plugins: {
       legend: {
         position: "top",
+        display: false,
       },
     },
   };
@@ -78,17 +89,14 @@ export function QueryThreeComponent() {
     labels,
     datasets: [
       {
-        label: "2019 Sales",
-        data: seriesOne,
-        backgroundColor: chartColors[0],
-      },
-      {
-        label: "2020 Sales",
-        data: seriesTwo,
-        backgroundColor: chartColors[1],
+        label: "Percentage Change",
+        data: series,
+        backgroundColor: chartColors,
       },
     ],
   };
 
   return <Bar options={options} data={data} />;
 }
+
+export default TopFiveWorstAndBestPerformers;

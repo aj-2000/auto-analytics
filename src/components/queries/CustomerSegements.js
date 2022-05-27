@@ -9,15 +9,21 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-
 import { Pie } from "react-chartjs-2";
 import { BASE_URL } from "../../consts/urls";
 
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
-const tabs = ["earnings_ttm", "revenue_ttm", "marketcap", "employees_count"];
+const tabs = [
+  "Drive Train",
+  "Transmission",
+  "Class",
+  "Brand",
+  "Fuel_Type",
+  "Body_type",
+];
 
-const QueryTenComponent = () => {
+const CustomerSegements = () => {
   const [value, setValue] = useState(0);
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -48,8 +54,8 @@ const QueryTenComponent = () => {
   };
 
   useEffect(() => {
-    async function getQueryTenData() {
-      const apiUrl = `${BASE_URL}/q10/${value}`;
+    async function getQuerySixData() {
+      const apiUrl = `${BASE_URL}/q6/${value}`;
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -59,10 +65,10 @@ const QueryTenComponent = () => {
       const data = await response.json();
       const obj = JSON.parse(data);
       console.log(obj);
-      setLabels(Object.values(obj["Name"]));
-      setSeries(Object.values(obj[tabs[value]]));
+      setLabels(Object.keys(obj));
+      setSeries(Object.values(obj));
     }
-    getQueryTenData();
+    getQuerySixData();
   }, [value]);
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
@@ -73,14 +79,16 @@ const QueryTenComponent = () => {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        <Tab label="EARNINGS(B USD)" />
-        <Tab label="REVENUE(B USD)" />
-        <Tab label="Market Cap.(B USD)" />
-        <Tab label="Employees" />
+        <Tab label="Drive Train" />
+        <Tab label="Transmission" />
+        <Tab label="Class" />
+        <Tab label="Brand" />
+        <Tab label="Fuel Type" />
+        <Tab label="Body Type" />
       </Tabs>
       <Pie data={data} />
     </Box>
   );
 };
 
-export default QueryTenComponent;
+export default CustomerSegements;

@@ -39,14 +39,13 @@ const options = {
     },
   },
   scales: {
-
     y: {
       type: "linear",
       display: true,
       position: "left",
       title: {
         display: true,
-        text: "Sales",
+        text: "Numbre of Cars Produced",
         font: {
           size: 15,
         },
@@ -64,7 +63,7 @@ const options = {
       },
       title: {
         display: true,
-        text: "Consumer Sentiment",
+        text: "Percent Change",
         font: {
           size: 15,
         },
@@ -76,13 +75,13 @@ const options = {
   },
 };
 
-const QueryNineComponent = () => {
+const GrowthOfPassengerCarsProductionInIndia = () => {
   const [seriesOne, setSeriesOne] = useState([]);
   const [seriesTwo, setSeriesTwo] = useState([]);
   const [labels, setLabels] = useState([]);
   useEffect(() => {
-    async function getQueryNineData() {
-      const apiUrl = `${BASE_URL}/q9`;
+    async function getQueryEightData() {
+      const apiUrl = `${BASE_URL}/q8`;
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -90,30 +89,45 @@ const QueryNineComponent = () => {
         },
       });
       const data = await response.json();
-      const obj = JSON.parse(data);
-      console.log(obj);
-      setLabels(Object.values(obj["Date"]));
-      setSeriesOne(Object.values(obj["Total Sales"]));
-      setSeriesTwo(Object.values(obj["Consumer Sentiment"]));
+      const objArray = JSON.parse(data);
+      console.log(objArray);
+      setLabels(
+        objArray.map((obj) => {
+          return obj.Year;
+        })
+      );
+      setSeriesOne(
+        objArray.map((obj) => {
+          return obj["Value"];
+        })
+      );
+      setSeriesTwo(
+        objArray.map((obj) => {
+          return obj["Percent Change"];
+        })
+      );
     }
-    getQueryNineData();
+    getQueryEightData();
   }, []);
   const data = {
     labels,
     datasets: [
       {
-        label: "Sales",
+        type: "line",
+        label: "Percent Change from Previous Production",
+        data: seriesTwo,
+        borderColor: chartColorsV2[1],
+        backgroundColor: chartColors[1],
+        borderWidth: 2,
+        yAxisID: "y1",
+      },
+      {
+        type: "bar",
+        label: "Numbre of Cars Produced",
         data: seriesOne,
         borderColor: chartColorsV2[0],
         backgroundColor: chartColors[0],
         yAxisID: "y",
-      },
-      {
-        label: "Consumer Sentiment",
-        data: seriesTwo,
-        borderColor: chartColorsV2[1],
-        backgroundColor: chartColors[1],
-        yAxisID: "y1",
       },
     ],
   };
@@ -121,4 +135,4 @@ const QueryNineComponent = () => {
   return <Line options={options} data={data} />;
 };
 
-export default QueryNineComponent;
+export default GrowthOfPassengerCarsProductionInIndia;

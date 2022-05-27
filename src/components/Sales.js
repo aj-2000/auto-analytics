@@ -39,8 +39,8 @@ const Sales = (props) => {
   return (
     <SalesContainer>
       <IconContainer upOrDown={upOrDown}>
-        {upOrDown == "sales-up" && <TrendingUpIcon />}
-        {upOrDown == "sales-down" && <TrendingDownIcon />}
+        {upOrDown === "sales-up" && <TrendingUpIcon />}
+        {upOrDown === "sales-down" && <TrendingDownIcon />}
       </IconContainer>
       <SalesValue upOrDown={upOrDown}>{numberFormat.format(props.currentValue)}k</SalesValue>
       <Title>{props.title}</Title>

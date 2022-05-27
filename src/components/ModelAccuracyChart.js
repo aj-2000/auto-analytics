@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { BASE_URL } from "../consts/urls";
 
 import {
   Chart as ChartJS,
@@ -65,7 +64,7 @@ const ModelAccuracyChart = (props) => {
       setSeriesTwo(Object.values(JSON.parse(obj["PREDICTED"])));
     }
     getChartData(labels);
-  }, [props.updateChart, props.apiUrl]);
+  }, [labels, props.fileURL, props.apiUrl]);
   const data = {
     labels,
     datasets: [

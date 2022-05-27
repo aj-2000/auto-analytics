@@ -21,13 +21,14 @@ ChartJS.register(
   Legend
 );
 
-export function QueryFourComponent() {
+function SalesVolumesComparisonOfTopTenBrands() {
   const [labels, setLabels] = useState([]);
-  const [series, setSeries] = useState([]);
+  const [seriesOne, setSeriesOne] = useState([]);
+  const [seriesTwo, setSeriesTwo] = useState([]);
 
   useEffect(() => {
-    async function getQueryFourData() {
-      const apiUrl = `${BASE_URL}/q4/`;
+    async function getQueryThreeData() {
+      const apiUrl = `${BASE_URL}/q3/`;
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -35,31 +36,20 @@ export function QueryFourComponent() {
         },
       });
       const data = await response.json();
-      const objArray = JSON.parse(data);
-      setLabels(
-        objArray.map((obj) => {
-          return obj.Brand;
-        })
-      );
-      setSeries(
-        objArray.map((obj) => {
-          return obj["Percent Change"];
-        })
-      );
+      const obj = JSON.parse(data);
+      setLabels(Object.values(obj.Brand));
+      setSeriesOne(Object.values(obj["2019 sales"]));
+      setSeriesTwo(Object.values(obj["2020 sales"]));
     }
-    getQueryFourData();
+    getQueryThreeData();
   }, []);
-
   const options = {
     responsive: true,
     scales: {
-      legend: {
-        display: false, //This will do the task
-      },
       yAxes: {
         title: {
           display: true,
-          text: "Percent Change from previous yeaer sales",
+          text: "Sales Volume",
           font: {
             size: 15,
           },
@@ -81,7 +71,6 @@ export function QueryFourComponent() {
     plugins: {
       legend: {
         position: "top",
-        display: false,
       },
     },
   };
@@ -89,12 +78,19 @@ export function QueryFourComponent() {
     labels,
     datasets: [
       {
-        label: "Percentage Change",
-        data: series,
-        backgroundColor: chartColors,
+        label: "2019 Sales",
+        data: seriesOne,
+        backgroundColor: chartColors[0],
+      },
+      {
+        label: "2020 Sales",
+        data: seriesTwo,
+        backgroundColor: chartColors[1],
       },
     ],
   };
 
   return <Bar options={options} data={data} />;
 }
+
+export default SalesVolumesComparisonOfTopTenBrands;

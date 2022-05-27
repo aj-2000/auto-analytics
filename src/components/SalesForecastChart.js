@@ -61,6 +61,7 @@ const options = {
 };
 
 const SalesForecastChart = (props) => {
+  
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
   useEffect(() => {
@@ -85,7 +86,7 @@ const SalesForecastChart = (props) => {
       setSeries(Object.values(JSON.parse(obj["FORECAST"])));
     }
     getChartData(labels);
-  }, [props.apiUrl, props.fileURL]);
+  }, [labels, props.apiUrl, props.fileURL]);
   const data = {
     labels,
     datasets: [

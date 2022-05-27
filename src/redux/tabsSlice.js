@@ -10,6 +10,7 @@ export const tabsSlice = createSlice({
   name: "tabs",
   initialState: initialStateValue,
   reducers: {
+    // changing display property of chart drawer and records viewer
     viewCharts: (state) => {
       state["displayRecords"] = "none";
       state["displayCharts"] = "";

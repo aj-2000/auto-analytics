@@ -13,7 +13,7 @@ import { chartColors } from "../../consts/colors";
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-export function QueryOneComponent() {
+function RelationshipBetweenPriceAndMileage() {
   //Intializiation of States
   const [dataManual, setDataManual] = useState([]);
   const [dataAutomatic, setDataAutomatic] = useState([]);
@@ -110,3 +110,5 @@ export function QueryOneComponent() {
 
   return <Scatter options={options} data={data} />;
 }
+
+export default RelationshipBetweenPriceAndMileage;

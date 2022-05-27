@@ -217,7 +217,7 @@ const SalesForecast = () => {
           </Item>
         </Grid>
         <Grid item xs={12}>
-          {isSeriesStationary == "NO" && (
+          {isSeriesStationary === "NO" && (
             <Alert severity="warning">
               The time series with trends, or with seasonality, are not
               stationary — the trend and seasonality will affect the value of

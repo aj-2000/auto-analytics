@@ -21,7 +21,7 @@ const tabs = [
   "Cars Exports(Billion USD)",
 ];
 
-const QueryFiveComponent = () => {
+const TopFiveCountriesByProductionSalesExport = () => {
   const [value, setValue] = useState(0);
   const [series, setSeries] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -77,4 +77,4 @@ const QueryFiveComponent = () => {
   );
 };
 
-export default QueryFiveComponent;
+export default TopFiveCountriesByProductionSalesExport;

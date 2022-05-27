@@ -12,13 +12,12 @@ import {
 import Button from "@mui/material/Button";
 import { Line } from "react-chartjs-2";
 import { MONTHS_LIST } from "../../consts/arrays";
-import { Stack, Grid, Chip, Box, Typography } from "@mui/material";
+import {Box} from "@mui/material";
 import Modal from "@mui/material/Modal";
 import styled from "styled-components";
 import { BASE_URL } from "../../consts/urls";
 import { chartColors, chartColorsV1, chartColorsV2 } from "../../consts/colors";
-import { QueryFourComponent } from "./QueryFourComponent";
-import QueryTwoComponent from "./QueryTwoComponent";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -37,7 +36,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
+//Prediction Modal Styles
 const ModalTitle = styled.p`
   text-align: center;
 `;
@@ -46,7 +45,7 @@ const ModalItem = styled.div``;
 const Month = styled.div``;
 const InfoContainer = styled.div``;
 
-export function QuerySevenComponent() {
+function RightTimeToLauchCarUsingSMA() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -267,3 +266,5 @@ export function QuerySevenComponent() {
     </Box>
   );
 }
+
+export default RightTimeToLauchCarUsingSMA;

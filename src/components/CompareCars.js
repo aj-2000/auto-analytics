@@ -7,7 +7,6 @@ import {
   Alert,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { default as sty } from "styled-components";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -68,9 +67,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-
-
 
 const CHART_TYPES = {
   LINE: "line",
@@ -276,10 +272,9 @@ const CompareCars = () => {
       dispatch(setNumberOfRecords(0));
     }
   };
-
   useEffect(() => {
-    //fix: synchorization of states between toggle component and redux store tabs 
-     dispatch(viewCharts());
+    //fix: synchorization of states between toggle component and redux store tabs
+    dispatch(viewCharts());
     //
     async function getFilteredCarsData() {
       const response = await fetch(apiUrl, {
@@ -293,7 +288,7 @@ const CompareCars = () => {
       setRows(obj);
     }
     getFilteredCarsData();
-  }, dependencyArray);
+  }, [dispatch, apiUrl, ...dependencyArray]);
   useEffect(() => {
     setXDataSet(
       rows.map((obj) => {
@@ -328,11 +323,11 @@ const CompareCars = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={6} lg={3}>
-        <FormControl fullWidth>
+          <FormControl fullWidth>
             {/* //Manufacturer */}
             <InputLabel id="make-select-label">Manufacturer</InputLabel>
             <Select
-            fullWidth
+              fullWidth
               labelId="make-select-label"
               id="make"
               value={filters.make}
@@ -346,10 +341,9 @@ const CompareCars = () => {
               ))}
             </Select>
           </FormControl>
-
         </Grid>
         <Grid item xs={6} lg={3}>
-        <FormControl fullWidth>
+          <FormControl fullWidth>
             {/* //Fuel_Type */}
             <InputLabel id="fuelType-select-label">Fuel_Type</InputLabel>
             <Select
@@ -366,10 +360,9 @@ const CompareCars = () => {
               ))}
             </Select>
           </FormControl>
-          
         </Grid>
         <Grid item xs={6} lg={3}>
-        <FormControl fullWidth>
+          <FormControl fullWidth>
             {/* //Transmission */}
             <InputLabel id="transmission-select-label">Transmission</InputLabel>
             <Select
@@ -386,10 +379,9 @@ const CompareCars = () => {
               ))}
             </Select>
           </FormControl>
-          
         </Grid>
         <Grid item xs={6} lg={3}>
-        <FormControl fullWidth>
+          <FormControl fullWidth>
             {/* Order by */}
             <InputLabel id="orderBy-select-label">Order By</InputLabel>
             <Select
@@ -406,73 +398,66 @@ const CompareCars = () => {
               ))}
             </Select>
           </FormControl>
-          
         </Grid>
         <Grid item xs={6} lg={2}>
-           {/* Price >= */}
-           <TextField
-           fullWidth
+          {/* Price >= */}
+          <TextField
+            fullWidth
             id="outlined-basic"
             onChange={handlePrice}
             label="Price >="
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={6} lg={2}>
           {/* Year >= */}
           <TextField
-          fullWidth
+            fullWidth
             id="outlined-basic"
             onChange={handleYear}
             label="Year >="
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={6} lg={2}>
           {/* Mileage(KM/L) >= */}
           <TextField
-          fullWidth
+            fullWidth
             id="outlined-basic"
             onChange={handleMileageKML}
             label="Mileage(KM/L) >="
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={6} lg={2}>
           {/* Engine(CC) >= */}
           <TextField
-          fullWidth
+            fullWidth
             id="outlined-basic"
             onChange={handleEngineCC}
             label="Engine(CC) >="
             variant="outlined"
           />
-          
         </Grid>
-        <Grid item xs={6} lg={2}> 
+        <Grid item xs={6} lg={2}>
           {/* Power >= */}
           <TextField
-          fullWidth
+            fullWidth
             id="outlined-basic"
             onChange={handlePower}
             label="Power >="
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={6} lg={2}>
-           {/* Seats >= */}
-           <TextField
-           fullWidth
+          {/* Seats >= */}
+          <TextField
+            fullWidth
             id="outlined-basic"
             onChange={handleSeats}
             label="Seats >="
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={12} lg={12}>
           {/* NumberOfRecords >= */}
@@ -484,178 +469,180 @@ const CompareCars = () => {
             label="Max Records"
             variant="outlined"
           />
-          
         </Grid>
         <Grid item xs={12}>
-           {/* Alert */}
-        {rows.length === 0 && (
-          <Alert severity="info">
-            <b>No matching records found.</b>
-          </Alert>
-        )}
-        {rows.length !== 0 && (
-          <Alert severity="info">
-            <b>{rows.length} records found.</b> <br />{" "}
-            <i>Set Max Records to 0 to view all matching records.</i>
-          </Alert>
-        )}
-          
+          {/* Alert */}
+          {rows.length === 0 && (
+            <Alert severity="info">
+              <b>No matching records found.</b>
+            </Alert>
+          )}
+          {rows.length !== 0 && (
+            <Alert severity="info">
+              <b>{rows.length} records found.</b> <br />{" "}
+              <i>Set Max Records to 0 to view all matching records.</i>
+            </Alert>
+          )}
         </Grid>
         <Grid item xs={12}>
-        <ToggleButtonGroup
+          <ToggleButtonGroup
             fullWidth
-              color="primary"
-              value={chartType}
-              exclusive
-              onChange={handleChartType}
-            >
-              <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
-              <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
-              {/* <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton> */}
-            </ToggleButtonGroup>
-          
+            color="primary"
+            value={chartType}
+            exclusive
+            onChange={handleChartType}
+          >
+            <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
+            <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
+            {/* <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton> */}
+          </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}>
           {/*Chart Title */}
           <TextField
             fullWidth
-              id="outlined-basic"
-              onChange={handleChartTitle}
-              label="Chart Title"
-              variant="outlined"
-            />
-          
+            id="outlined-basic"
+            onChange={handleChartTitle}
+            label="Chart Title"
+            variant="outlined"
+          />
         </Grid>
         <Grid item xs={4}>
-        <FormControl fullWidth >
-              {/*Select Xaxis Data Set */}
-              <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
-              <Select
-                labelId="xaxis-data-select-label"
-                id="xaxis-data"
-                value={xTitle}
-                label="Manufacturer"
-                onChange={handleXDataSet}
-              >
-                {PROPERTIES_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          
+          <FormControl fullWidth>
+            {/*Select Xaxis Data Set */}
+            <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
+            <Select
+              labelId="xaxis-data-select-label"
+              id="xaxis-data"
+              value={xTitle}
+              label="Manufacturer"
+              onChange={handleXDataSet}
+            >
+              {PROPERTIES_LIST.map((itm) => (
+                <MenuItem value={itm} key={itm}>
+                  {itm}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item xs={4}>
-        <FormControl fullWidth>
-              {/*Select Yaxis data set one */}
-              <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
-              <Select
-                labelId="dataset-one-select-label"
-                id="dataset-one"
-                value={yDataSetOneLabel}
-                label="DATASET 1"
-                onChange={handleYDataSetOneLabel}
-              >
-                {Y_DATA_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <FormControl fullWidth>
+            {/*Select Yaxis data set one */}
+            <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
+            <Select
+              labelId="dataset-one-select-label"
+              id="dataset-one"
+              value={yDataSetOneLabel}
+              label="DATASET 1"
+              onChange={handleYDataSetOneLabel}
+            >
+              {Y_DATA_LIST.map((itm) => (
+                <MenuItem value={itm} key={itm}>
+                  {itm}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
-        
 
-        <Grid item  xs={4}>
-        <FormControl fullWidth>
-              {/*Select Yaxis data se 2 */}
-              <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
-              <Select
-                labelId="dataset-two-select-label"
-                id="dataset-two"
-                value={yDataSetTwoLabel}
-                label="DATASET 2"
-                onChange={handleYDataSetTwoLabel}
-              >
-                {Y_DATA_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          
+        <Grid item xs={4}>
+          <FormControl fullWidth>
+            {/*Select Yaxis data se 2 */}
+            <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
+            <Select
+              labelId="dataset-two-select-label"
+              id="dataset-two"
+              value={yDataSetTwoLabel}
+              label="DATASET 2"
+              onChange={handleYDataSetTwoLabel}
+            >
+              {Y_DATA_LIST.map((itm) => (
+                <MenuItem value={itm} key={itm}>
+                  {itm}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Grid>
         <Grid item sx={{ display: tabs["displayCharts"] }} xs={12}>
-        {chartType == CHART_TYPES.LINE && (
+          {chartType === CHART_TYPES.LINE && (
             <Line options={options} data={data} />
           )}
-          {chartType == CHART_TYPES.BAR && (
+          {chartType === CHART_TYPES.BAR && (
             <Bar options={options} data={data} />
           )}
-          
         </Grid>
 
         <Grid item xs={12}>
-        <TableContainer
-        sx={{ display: tabs["displayRecords"] }}
-        component={Paper}
-      >
-        <Table aria-label="simple table">
-          <TableHead>
-            <StyledTableRow>
-              <StyledTableCell align="center"> Name </StyledTableCell>
-              <StyledTableCell align="center"> Manufacturer </StyledTableCell>
-              <StyledTableCell align="center"> Year </StyledTableCell>
-              <StyledTableCell align="center"> Fuel Type </StyledTableCell>
-              <StyledTableCell align="center"> Transmission </StyledTableCell>
-              <StyledTableCell align="center"> Engine CC </StyledTableCell>
-              <StyledTableCell align="center"> Power </StyledTableCell>
-              <StyledTableCell align="center"> Seats </StyledTableCell>
-              <StyledTableCell align="center"> Mileage(KM/L) </StyledTableCell>
-              <StyledTableCell align="center"> Price </StyledTableCell>
-              <StyledTableCell align="center">
-                {" "}
-                Average Yearly Sales{" "}
-              </StyledTableCell>
-            </StyledTableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow
-                key={row.Name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <StyledTableCell component="th" scope="row">
-                  {row.Name}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.Manufacturer}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.Year}</StyledTableCell>
-                <StyledTableCell align="right">{row.Fuel_Type}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row.Transmission}
-                </StyledTableCell>
-                <StyledTableCell align="right">
-                  {row["Engine CC"]}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.Power}</StyledTableCell>
-                <StyledTableCell align="right">{row.Seats}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row["Mileage Km/L"]}
-                </StyledTableCell>
-                <StyledTableCell align="right">{row.Price}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {row.AverageYearlySales}
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-          
+          <TableContainer
+            sx={{ display: tabs["displayRecords"] }}
+            component={Paper}
+          >
+            <Table aria-label="simple table">
+              <TableHead>
+                <StyledTableRow>
+                  <StyledTableCell align="center"> Name </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {" "}
+                    Manufacturer{" "}
+                  </StyledTableCell>
+                  <StyledTableCell align="center"> Year </StyledTableCell>
+                  <StyledTableCell align="center"> Fuel Type </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {" "}
+                    Transmission{" "}
+                  </StyledTableCell>
+                  <StyledTableCell align="center"> Engine CC </StyledTableCell>
+                  <StyledTableCell align="center"> Power </StyledTableCell>
+                  <StyledTableCell align="center"> Seats </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {" "}
+                    Mileage(KM/L){" "}
+                  </StyledTableCell>
+                  <StyledTableCell align="center"> Price </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {" "}
+                    Average Yearly Sales{" "}
+                  </StyledTableCell>
+                </StyledTableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <StyledTableRow
+                    key={row.Name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      {row.Name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {row.Manufacturer}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.Year}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.Fuel_Type}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.Transmission}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row["Engine CC"]}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.Power}</StyledTableCell>
+                    <StyledTableCell align="right">{row.Seats}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row["Mileage Km/L"]}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.Price}</StyledTableCell>
+                    <StyledTableCell align="right">
+                      {row.AverageYearlySales}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Grid>
       </Grid>
     </Box>
