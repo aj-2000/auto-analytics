@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+//redux store tabs state
+//tabs state used in |DRAW CHARTS/VIEW RECORDS| menu on data analyzer page
 const initialStateValue = {
   displayCharts: "",
   displayRecords: "none",

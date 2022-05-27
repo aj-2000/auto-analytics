@@ -72,7 +72,7 @@ const QueryFiveComponent = () => {
         <Tab label="Sales(M UNITS)" />
         <Tab label="Exports(B USD)" />
       </Tabs>
-      <Pie data={data} />;
+      <Pie data={data} />
     </Box>
   );
 };

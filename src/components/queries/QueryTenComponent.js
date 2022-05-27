@@ -78,7 +78,7 @@ const QueryTenComponent = () => {
         <Tab label="Market Cap.(B USD)" />
         <Tab label="Employees" />
       </Tabs>
-      <Pie data={data} />;
+      <Pie data={data} />
     </Box>
   );
 };

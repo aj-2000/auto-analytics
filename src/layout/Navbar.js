@@ -1,3 +1,4 @@
+// Main Navigation bar showing Logo, App name and pages links.
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -12,16 +13,18 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 
+// Menu Items
 const pages = [["DASHBOARD"], ["DATA ANALYZER"], ["SALES FORECAST"]];
 
+//function responsibe for opening and closing of menu 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   let navigate = useNavigate();
-  //Responsive for Burger Menu
+  //Responsible for Burger Menu
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
+  //Responsible for navigation between pages on smaller screens devices(using hamburger Menu)
   const handleCloseNavMenu = (event, page) => {
     if (page === pages[0]) {
       navigate("/", { replace: true });
@@ -33,25 +36,28 @@ const Navbar = () => {
     setAnchorElNav(null);
   };
 
-  function handleAnalyzer(event) {
+  ///Responsible for navigation between pages on mid to large screens devices(using Navbar menu)
+  function handleAnalyzer() {
     navigate("/analyzer", { replace: true });
     setAnchorElNav(null);
   }
 
-  function handleDashboard(event) {
+  function handleDashboard() {
     navigate("/", { replace: true });
     setAnchorElNav(null);
   }
 
-  function handleForecast(event) {
+  function handleForecast() {
     navigate("/forecast", { replace: true });
     setAnchorElNav(null);
   }
 
   return (
+    //AppBar component from MUI5 library
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          {/* //Displays logo on large screens */}
           <Insights sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -70,6 +76,8 @@ const Navbar = () => {
           >
             AUTO ANALYTICS
           </Typography>
+          {/* //hamburger menu logic (source MUI5: docs) */}
+          {/* https://mui.com/material-ui/react-app-bar/#main-content */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -131,6 +139,7 @@ const Navbar = () => {
           >
             AUTO ANALYTICS
           </Typography>
+          {/* //Navingation menu on mid to large screens */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               onClick={handleDashboard}

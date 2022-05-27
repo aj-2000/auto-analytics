@@ -113,6 +113,7 @@ const CompareCars = () => {
   const handleChartTitle = (event) => {
     if (event.target.value) {
       setChartTitle(event.target.value);
+      console.log(event.target.value);
     } else {
       setChartTitle("Chart Title");
     }
@@ -127,7 +128,7 @@ const CompareCars = () => {
     stacked: false,
     plugins: {
       title: {
-        display: false,
+        display: true,
         text: chartTitle,
       },
     },

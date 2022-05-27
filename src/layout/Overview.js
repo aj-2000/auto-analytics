@@ -1,8 +1,8 @@
+// Component responsible for top secition showing top brands, sales etc.
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../consts/urls";
 import Leaderboard from "../components/LeaderBoard";
 import Sales from "../components/Sales";
-
 import { LinearProgress } from "@mui/material";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
@@ -12,6 +12,7 @@ const Overview = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    //Get and set sale& brands data from api 
     async function getOverviewData() {
       const apiUrl = `${BASE_URL}/overview/`;
       const response = await fetch(apiUrl, {

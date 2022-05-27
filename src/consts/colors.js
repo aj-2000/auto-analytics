@@ -1,3 +1,4 @@
+// used as background colors in charts
 export const chartColors = [
   "rgba(255, 99, 132, 1)",
   "rgba(54, 162, 235, 1)",
@@ -24,6 +25,7 @@ export const chartColorsV1 = [
   "rgba(235, 83, 83, 0.2)",
 ];
 
+//used for borders in charts
 export const chartColorsV2 = [
   "rgba(255, 99, 132, 0.8)",
   "rgba(54, 162, 235, 0.8)",
@@ -37,5 +39,5 @@ export const chartColorsV2 = [
   "rgba(235, 83, 83, 0.8)",
 ];
 
-// Colors
+// Colors for Title background of Charts on dashboard page
 export const GREEN_BG_COLOR = "#14C38E";

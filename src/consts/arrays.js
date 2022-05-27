@@ -1,3 +1,7 @@
+// used for rendering the data analyzer menu items
+// generated from the auto_mpg_final dataset
+// https://github.com/aj-2000/autoapi/blob/main/App/datasets/auto_mpg_final.csv
+
 export const MANUFACTURER_LIST = [
   "All",
   "Maruti",

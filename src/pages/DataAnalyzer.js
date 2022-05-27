@@ -8,6 +8,9 @@ import Grid from "@mui/material/Grid";
 import CompareCars from "../components/CompareCars";
 import { useDispatch } from "react-redux";
 import { viewCharts, viewRecords } from "../redux/tabsSlice";
+
+//funciton responsible to change view between charts and records
+//handling and change tabs states using REDUX (tabsSlice)
 export default function IconTabs() {
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(0);

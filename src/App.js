@@ -12,6 +12,7 @@ function App() {
       <Stack spacing={2}>
         <Navbar />
         <div>
+          {/* Rendenring different pages inside the APP component based on the pathname */}
           {(location.pathname === "/" ||
             location.pathname === "/dashboard") && <Dashboard />}
           {location.pathname === "/analyzer" && <DataAnalyzer />}

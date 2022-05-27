@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { BASE_URL } from "../consts/urls";
 
 import {
   Chart as ChartJS,

@@ -1,3 +1,0 @@
-Redux (using Toolkit) -> Create Store -> use Provider -> Create slices -> useSelector -  to read states -> useDispatch - to change values -> More Reducers
-use cases -> global states such as themes
-we should use react basic hooks for local states

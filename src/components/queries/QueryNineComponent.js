@@ -39,6 +39,7 @@ const options = {
     },
   },
   scales: {
+
     y: {
       type: "linear",
       display: true,

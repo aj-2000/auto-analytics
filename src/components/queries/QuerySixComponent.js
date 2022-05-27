@@ -87,7 +87,7 @@ const QuerySixComponent = () => {
         <Tab label="Fuel Type" />
         <Tab label="Body Type" />
       </Tabs>
-      <Pie data={data} />;
+      <Pie data={data} />
     </Box>
   );
 };

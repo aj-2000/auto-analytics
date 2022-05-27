@@ -1,3 +1,5 @@
+// fuction for converting Unix Timestaps(in milliseconds) to DD/MM/YYYY format strings
+//used in salesforecast line charts
 export default function unixTimeStampToDate(unixTimeStamp) {
     // Create a new JavaScript Date object based on the timestamp
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
