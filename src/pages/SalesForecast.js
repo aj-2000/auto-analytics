@@ -69,7 +69,6 @@ const SalesForecast = () => {
   const [fileURL, setFileURL] = useState(demoCSVFileURL);
   const [pValue, setPValue] = useState(1);
   const [qValue, setQValue] = useState(1);
-  const [nLags, setNLags] = useState(1);
   const [numberOfForecasts, setNumberOfForecasts] = useState(5);
   // used to error message if failed to mid model to data 
   const [error, setError] = useState(null);
@@ -91,14 +90,11 @@ const SalesForecast = () => {
   const handleQValue = (event) => {
     setQValue(event.target.value);
   };
-  const handleNLagsValue = (event) => {
-    setNLags(event.target.value);
-  };
   const handleNumberOfForecasts = (event) => {
     setNumberOfForecasts(event.target.value);
   };
 
-  const apiUrl = `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${nLags}/`;
+  const apiUrl = `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${1}/`;
 
   //function responsible for fitting data to model using django rest api
   async function fitModelWithData() {
@@ -154,7 +150,7 @@ const SalesForecast = () => {
             defaultValue={demoCSVFileURL}
           />
         </Grid>
-        <Grid item xs={6} md={3}>
+        <Grid item xs={4}>
           <TextField
             fullWidth
             onChange={handlePValue}
@@ -164,7 +160,7 @@ const SalesForecast = () => {
             defaultValue="1"
           />
         </Grid>
-        <Grid item xs={6} md={3}>
+        <Grid item xs={4}>
           <TextField
             fullWidth
             onChange={handleQValue}
@@ -174,17 +170,8 @@ const SalesForecast = () => {
             defaultValue="1"
           />
         </Grid>
-        <Grid item xs={6} md={3}>
-          <TextField
-            fullWidth
-            onChange={handleNLagsValue}
-            id="nlags_value"
-            label="nLags Value"
-            helperText={""}
-            defaultValue="1"
-          />
-        </Grid>
-        <Grid item xs={6} md={3}>
+        
+        <Grid item xs={4}>
           <TextField
             fullWidth
             onChange={handleNumberOfForecasts}
