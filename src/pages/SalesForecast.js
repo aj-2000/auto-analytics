@@ -299,7 +299,7 @@ const SalesForecast = () => {
             values. All other columns will be ignored.</i><br/>
             STEP 2. Fit model to data. <br/>
             STEP 3. View forecasts. <br/>
-            <b>ADDITIONAL INFO</b> 
+            <b>ADDITIONAL INFO</b> <br/>
             1. You can also try different combinations of P and Q to increase accuracy.<br/>
             2. Combination with less Residual Sum of Squares value will be better. <br/>
             3. Value of P and Q should not be very large. <br/>
