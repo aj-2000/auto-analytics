@@ -25,6 +25,7 @@ ChartJS.register(
   Legend
 );
 
+//Multi Type chart configurations
 const options = {
   responsive: true,
   interaction: {
@@ -76,38 +77,46 @@ const options = {
 };
 
 const GrowthOfPassengerCarsProductionInIndia = () => {
-  const [seriesOne, setSeriesOne] = useState([]);
-  const [seriesTwo, setSeriesTwo] = useState([]);
+  const [productionValues, setProductionValues] = useState([]);
+  const [percentChange, setPercentChange] = useState([]);
+  //xAxes labels
   const [labels, setLabels] = useState([]);
+  //get chart data from api call and setting to data
   useEffect(() => {
-    async function getQueryEightData() {
+    async function getProductionData() {
       const apiUrl = `${BASE_URL}/q8`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const objArray = JSON.parse(data);
-      console.log(objArray);
-      setLabels(
-        objArray.map((obj) => {
-          return obj.Year;
-        })
-      );
-      setSeriesOne(
-        objArray.map((obj) => {
-          return obj["Value"];
-        })
-      );
-      setSeriesTwo(
-        objArray.map((obj) => {
-          return obj["Percent Change"];
-        })
-      );
+      // Error Handling By Try-Catch Block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const fetchedResponse = await response.json();
+        const chartData = JSON.parse(fetchedResponse);
+        setLabels(
+          chartData.map((obj) => {
+            return obj.Year;
+          })
+        );
+        setProductionValues(
+          chartData.map((obj) => {
+            return obj["Value"];
+          })
+        );
+        setPercentChange(
+          chartData.map((obj) => {
+            return obj["Percent Change"];
+          })
+        );
+      } catch (e){
+        // will print error to console if something goes wrong...
+        console.error(e);
+      }
+      
     }
-    getQueryEightData();
+    getProductionData();
   }, []);
   const data = {
     labels,
@@ -115,7 +124,7 @@ const GrowthOfPassengerCarsProductionInIndia = () => {
       {
         type: "line",
         label: "Percent Change from Previous Production",
-        data: seriesTwo,
+        data: percentChange,
         borderColor: chartColorsV2[1],
         backgroundColor: chartColors[1],
         borderWidth: 2,
@@ -124,7 +133,7 @@ const GrowthOfPassengerCarsProductionInIndia = () => {
       {
         type: "bar",
         label: "Numbre of Cars Produced",
-        data: seriesOne,
+        data: productionValues,
         borderColor: chartColorsV2[0],
         backgroundColor: chartColors[0],
         yAxisID: "y",

@@ -23,33 +23,41 @@ ChartJS.register(
 
 export function TopFiveWorstAndBestPerformers() {
   const [labels, setLabels] = useState([]);
-  const [series, setSeries] = useState([]);
+  const [percentChange, setPercentChange] = useState([]);
 
   useEffect(() => {
-    async function getQueryFourData() {
+    async function getPerfomanceData() {
+      // API Docs: https://github.com/aj-2000/autoapi
       const apiUrl = `${BASE_URL}/q4/`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const objArray = JSON.parse(data);
-      setLabels(
-        objArray.map((obj) => {
-          return obj.Brand;
-        })
-      );
-      setSeries(
-        objArray.map((obj) => {
-          return obj["Percent Change"];
-        })
-      );
-    }
-    getQueryFourData();
-  }, []);
+      // Error Handling by Try catch Block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const fetchedResponse = await response.json();
+        const chartData = JSON.parse(fetchedResponse);
 
+        setLabels(
+          chartData.map((obj) => {
+            return obj.Brand;
+          })
+        );
+        setPercentChange(
+          chartData.map((obj) => {
+            return obj["Percent Change"];
+          })
+        );
+      } catch (e) {
+        // will print error to console if something goes wrong
+        console.error(e);
+      }
+    }
+    getPerfomanceData();
+  }, []);
+  //chartJS chart options
   const options = {
     responsive: true,
     scales: {
@@ -85,12 +93,13 @@ export function TopFiveWorstAndBestPerformers() {
       },
     },
   };
+  // chart data object
   const data = {
     labels,
     datasets: [
       {
         label: "Percentage Change",
-        data: series,
+        data: percentChange,
         backgroundColor: chartColors,
       },
     ],

@@ -1,8 +1,8 @@
 // all components get api server url from this file
 // Local API server url
-// export const BASE_URL =  'http://127.0.0.1:8000'
+export const BASE_URL =  'http://127.0.0.1:8000'
 // Hosted API server url
-export const BASE_URL = "https://engage-autoapi.herokuapp.com";
+// export const BASE_URL = "https://engage-autoapi.herokuapp.com";
 
 //default csv file link for sales forecast page 
 export const demoCSVFileURL =

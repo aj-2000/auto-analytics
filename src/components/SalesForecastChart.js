@@ -1,3 +1,4 @@
+// Line chart plotted with forecasted values
 import React from "react";
 import { useState, useEffect } from "react";
 
@@ -24,82 +25,97 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+// Line Chart Configurations
 const options = {
-    scales: {
-        yAxes: {
-          title: {
-            display: true,
-            text: "Sales",
-            font: {
-              size: 15,
-            },
-          },
-          ticks: {
-            precision: 0,
-          },
-        },
-        xAxes: {
-          title: {
-            display: true,
-            text: "Next Datapoints",
-            font: {
-              size: 15,
-            },
-          },
-        },
-      },
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
+  scales: {
+    yAxes: {
       title: {
         display: true,
-        text: 'SALES FORECASTING by TIME SERIES ANALYSIS (AMIRA MODEL)',
+        text: "Sales",
+        font: {
+          size: 15,
+        },
+      },
+      ticks: {
+        precision: 0,
       },
     },
+    xAxes: {
+      title: {
+        display: true,
+        text: "Next Datapoints",
+        font: {
+          size: 15,
+        },
+      },
+    },
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "SALES FORECASTING by TIME SERIES ANALYSIS (AMIRA MODEL)",
+    },
+  },
 };
 
 const SalesForecastChart = (props) => {
-  
-  const [series, setSeries] = useState([]);
+  const [forecastedValues, setForecastedValues] = useState([]);
+  //Next Datapoints (Days/Months/Year etc.) (Depends on Dataset)
   const [labels, setLabels] = useState([]);
   useEffect(() => {
-    async function getChartData() {
+    async function getForecastData() {
       const apiUrl = props.apiUrl;
       const fileURL = props.fileURL;
+      // Fetching the forecasts from autoapi forecast api endpoint
+      // API Docs: https://github.com/aj-2000/autoapi
       const requestOptions = {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        // converitng entered url to json string to send to autoapi forecast api endpoint
         body: JSON.stringify({ file_url: fileURL }),
       };
-      const response = await fetch(apiUrl,requestOptions);
-      const data = await response.json();
-      const obj = JSON.parse(data);
-     setLabels(
-          Object.keys(JSON.parse(obj["FORECAST"])).map((unixTimeStamp) =>
-            unixTimeStampToDate(parseInt(unixTimeStamp))
-          ))
-      setSeries(Object.values(JSON.parse(obj["FORECAST"])));
+      try {
+        const response = await fetch(apiUrl, requestOptions);
+        const fetchedResponse = await response.json();
+        const forecastData = JSON.parse(fetchedResponse);
+        // AutoAPI forecast send next data points as Unix timestamp(in milliseconds)
+        // so converting them to dates in DD/MM/YYYY format
+        setLabels(
+          Object.keys(JSON.parse(forecastData["FORECAST"])).map(
+            (unixTimeStamp) => unixTimeStampToDate(parseInt(unixTimeStamp))
+          )
+        );
+        setForecastedValues(
+          Object.values(JSON.parse(forecastData["FORECAST"]))
+        );
+      } catch (e) {
+        //will print error to console if something goes wrong
+        console.error(e);
+      }
     }
-    getChartData(labels);
+    getForecastData();
   }, [labels, props.apiUrl, props.fileURL]);
+  // ChartJS Line Chart Data Object
   const data = {
     labels,
     datasets: [
       {
         label: "FORECASTED VALUES",
-        data: series,
+        data: forecastedValues,
         borderColor: chartColorsV2[0],
         backgroundColor: chartColors[0],
       },
-      
     ],
   };
-
+  // ChartJS Line Chart
   return <Line options={options} data={data} />;
 };
 

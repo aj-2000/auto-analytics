@@ -1,3 +1,4 @@
+//Container for Charts displayed on dashboard and provides green title bar
 import React from 'react';
 import styled from 'styled-components';
 import { Paper } from '@mui/material';

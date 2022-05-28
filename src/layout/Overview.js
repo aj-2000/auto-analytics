@@ -12,23 +12,28 @@ const Overview = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    //Get and set sale& brands data from api 
+    //Get and set sale& brands data from api
     async function getOverviewData() {
       const apiUrl = `${BASE_URL}/overview/`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const obj = JSON.parse(data);
-      setLeaders({
-        topBrandYear: obj.top_brand_of_year,
-        topBrandMonth: obj.top_brand_of_month,
-      });
-      setSalesData(JSON.parse(obj.sales));
-      setIsLoaded(true);
+      // Error Handling By Try-Catch Block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const data = await response.json();
+        const obj = JSON.parse(data);
+        setLeaders({
+          topBrandYear: obj.top_brand_of_year,
+          topBrandMonth: obj.top_brand_of_month,
+        });
+        setSalesData(JSON.parse(obj.sales));
+        setIsLoaded(true);
+      } catch (error) {
+        //will print error to console if something goes wrong
+      }
     }
     getOverviewData();
   }, []);

@@ -22,26 +22,36 @@ ChartJS.register(
 );
 
 function SalesVolumesComparisonOfTopTenBrands() {
+  //Brands
   const [labels, setLabels] = useState([]);
-  const [seriesOne, setSeriesOne] = useState([]);
-  const [seriesTwo, setSeriesTwo] = useState([]);
+  //2019
+  const [yearOneSales, setYearOneSales] = useState([]);
+  //2020
+  const [yearTwoSales, setYearTwoSales] = useState([]);
 
   useEffect(() => {
-    async function getQueryThreeData() {
+    // API DOCS: https://github.com/aj-2000/autoapi
+    async function getChartData() {
       const apiUrl = `${BASE_URL}/q3/`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const obj = JSON.parse(data);
-      setLabels(Object.values(obj.Brand));
-      setSeriesOne(Object.values(obj["2019 sales"]));
-      setSeriesTwo(Object.values(obj["2020 sales"]));
+      // Error Handling By Try-Catch Block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const fetchedResponse = await response.json();
+        const chartData = JSON.parse(fetchedResponse);
+        setLabels(Object.values(chartData.Brand));
+        setYearOneSales(Object.values(chartData["2019 sales"]));
+        setYearTwoSales(Object.values(chartData["2020 sales"]));
+      } catch (error) {
+        //will print error to console if something goes wrong
+        console.error(error);
+      }
     }
-    getQueryThreeData();
+    getChartData();
   }, []);
   const options = {
     responsive: true,
@@ -74,17 +84,18 @@ function SalesVolumesComparisonOfTopTenBrands() {
       },
     },
   };
+  // ChartJS chart Data Object
   const data = {
     labels,
     datasets: [
       {
         label: "2019 Sales",
-        data: seriesOne,
+        data: yearOneSales,
         backgroundColor: chartColors[0],
       },
       {
         label: "2020 Sales",
-        data: seriesTwo,
+        data: yearTwoSales,
         backgroundColor: chartColors[1],
       },
     ],

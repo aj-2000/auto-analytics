@@ -1,3 +1,4 @@
+// Handles the working of data analyzer page
 import {
   TextField,
   MenuItem,
@@ -47,7 +48,7 @@ import { BASE_URL } from "../consts/urls";
 import { chartColors, chartColorsV2 } from "../consts/colors";
 import { viewCharts } from "../redux/tabsSlice";
 
-//Reponsible for table design
+//Reponsible for table styles
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -68,16 +69,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+// Chart Type Options
 const CHART_TYPES = {
   LINE: "line",
   BAR: "bar",
 };
 
 const CompareCars = () => {
+  //for changing and accessing redux store filter states
   const dispatch = useDispatch();
+
+  // accessing filters slice from redux store
   const filters = useSelector((state) => state.filters);
+
+  // tabs value (chart or records) from redux store
   const tabs = useSelector((state) => state.tabs);
+
+  // Using cars api of auto api
+  // API DOCS: https://github.com/aj-2000/autoapi
   const apiUrl = `${BASE_URL}/cars/${filters.make}/${filters.fuelType}/${filters.transmission}/${filters.orderBy}/${filters.year}/${filters.mileageKML}/${filters.engineCC}/${filters.power}/${filters.seats}/${filters.price}/${filters.numberOfRecords}/`;
+
+  // dependencyArray for useEffect
   const dependencyArray = [
     filters.fuelType,
     filters.orderBy,
@@ -91,9 +103,11 @@ const CompareCars = () => {
     filters.seats,
     filters.numberOfRecords,
   ];
+
+  // stores all filtered records data
   const [rows, setRows] = useState([]);
-  //ChartMakerStates
-  //ChartMaker
+
+  //ChartDrawerStates
   const [chartType, setChartType] = useState(CHART_TYPES.LINE);
   const [xTitle, setXTitle] = useState("Name");
   const [chartTitle, setChartTitle] = useState("Chart Title");
@@ -106,6 +120,7 @@ const CompareCars = () => {
     setChartType(newChartType);
   };
 
+  //Chart Options Handlers
   const handleChartTitle = (event) => {
     if (event.target.value) {
       setChartTitle(event.target.value);
@@ -115,81 +130,22 @@ const CompareCars = () => {
     }
   };
 
-  const options = {
-    responsive: true,
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    stacked: false,
-    plugins: {
-      title: {
-        display: true,
-        text: chartTitle,
-      },
-    },
-    scales: {
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-        title: {
-          display: true,
-          text: yDataSetOneLabel,
-          font: {
-            size: 20,
-          },
-        },
-        ticks: {
-          precision: 0,
-        },
-      },
-      y1: {
-        type: "linear",
-        display: true,
-        position: "right",
-        grid: {
-          drawOnChartArea: false,
-        },
-        title: {
-          display: true,
-          text: yDataSetTwoLabel,
-          font: {
-            size: 20,
-          },
-        },
-        ticks: {
-          precision: 0,
-        },
-      },
-    },
+  const handleXDataSet = (event) => {
+    setXTitle(event.target.value);
   };
 
-  const data = {
-    labels: xDataSet,
-    datasets: [
-      {
-        id: 1,
-        label: yDataSetOneLabel,
-        data: yDataSetOne,
-        borderColor: chartColorsV2[0],
-        backgroundColor: chartColors[0],
-        borderWidth: 2,
-        yAxisID: "y",
-      },
-      {
-        id: 2,
-        label: yDataSetTwoLabel,
-        data: yDataSetTwo,
-        borderColor: chartColorsV2[1],
-        backgroundColor: chartColors[1],
-        borderWidth: 2,
-        yAxisID: "y1",
-      },
-    ],
+  const handleYDataSetOneLabel = (event) => {
+    setYDataSetOneLabel(event.target.value);
+  };
+
+  const handleYDataSetTwoLabel = (event) => {
+    setYDataSetTwoLabel(event.target.value);
   };
 
   //Filter Handlers
+  //clear rows to make it ready to recieve new filtered records data
+  //also updates filters states in redux store
+
   const handleMake = (event) => {
     setRows([]);
     dispatch(setMake(event.target.value));
@@ -272,23 +228,36 @@ const CompareCars = () => {
       dispatch(setNumberOfRecords(0));
     }
   };
+
   useEffect(() => {
-    //fix: synchorization of states between toggle component and redux store tabs
+    // fix: synchorization of states between toggle component and redux store tabsSlice
+    // if set tabs value to Chart Drawer, everytime Data analyzer page loads.
     dispatch(viewCharts());
-    //
+    // fetches filtered cars data from api using autoapi's car api
+    // API Docs: https://github.com/aj-2000/autoapi
+
     async function getFilteredCarsData() {
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const tableData = await response.json();
-      const obj = JSON.parse(tableData);
-      setRows(obj);
+      //Error Handling by Try-Catch block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const fetchedResponse = await response.json();
+        const recordsData = JSON.parse(fetchedResponse);
+        setRows(recordsData);
+      } catch (error) {
+        //will print error to console if something goes wrong
+        console.error(error);
+      }
     }
     getFilteredCarsData();
-  }, [dispatch, apiUrl, ...dependencyArray]);
+  }, [dispatch, apiUrl, ...dependencyArray]); //If apiUrl or dependencyArray items changes then above
+  // useEffect will fetch new records from api
+
+  // Rerenders the charts after filtered records are fetched
   useEffect(() => {
     setXDataSet(
       rows.map((obj) => {
@@ -305,23 +274,89 @@ const CompareCars = () => {
         return obj[yDataSetTwoLabel];
       })
     );
-  }, [rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel]);
+  }, [rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel]); //If rows, xTitle, yDataSetOneLabel, yDataSetTwoLabel,
+  // changes above useEffect function will rerender the chart
 
-  const handleXDataSet = (event) => {
-    setXTitle(event.target.value);
+  //chartjs chart configurations
+  const options = {
+    responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    stacked: false,
+    plugins: {
+      title: {
+        display: true,
+        text: chartTitle,
+      },
+    },
+    scales: {
+      y: {
+        type: "linear",
+        display: true,
+        position: "left",
+        title: {
+          display: true,
+          text: yDataSetOneLabel,
+          font: {
+            size: 20,
+          },
+        },
+        ticks: {
+          precision: 0,
+        },
+      },
+      y1: {
+        type: "linear",
+        display: true,
+        position: "right",
+        grid: {
+          drawOnChartArea: false,
+        },
+        title: {
+          display: true,
+          text: yDataSetTwoLabel,
+          font: {
+            size: 20,
+          },
+        },
+        ticks: {
+          precision: 0,
+        },
+      },
+    },
   };
 
-  const handleYDataSetOneLabel = (event) => {
-    setYDataSetOneLabel(event.target.value);
-  };
-
-  const handleYDataSetTwoLabel = (event) => {
-    setYDataSetTwoLabel(event.target.value);
+  // chartjs data object
+  const data = {
+    labels: xDataSet,
+    datasets: [
+      {
+        id: 1,
+        label: yDataSetOneLabel,
+        data: yDataSetOne,
+        borderColor: chartColorsV2[0],
+        backgroundColor: chartColors[0],
+        borderWidth: 2,
+        yAxisID: "y",
+      },
+      {
+        id: 2,
+        label: yDataSetTwoLabel,
+        data: yDataSetTwo,
+        borderColor: chartColorsV2[1],
+        backgroundColor: chartColors[1],
+        borderWidth: 2,
+        yAxisID: "y1",
+      },
+    ],
   };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
+        {/* Filter Menu Items  */}
         <Grid item xs={6} lg={3}>
           <FormControl fullWidth>
             {/* //Manufacturer */}
@@ -484,6 +519,7 @@ const CompareCars = () => {
             </Alert>
           )}
         </Grid>
+        {/* Inputs Fields related to Charts */}
         <Grid item xs={12}>
           <ToggleButtonGroup
             fullWidth
@@ -494,7 +530,6 @@ const CompareCars = () => {
           >
             <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
             <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
-            {/* <ToggleButton value={CHART_TYPES.PIE}>PIE</ToggleButton> */}
           </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}>
@@ -565,7 +600,9 @@ const CompareCars = () => {
             </Select>
           </FormControl>
         </Grid>
+        {/*  */}
         <Grid item sx={{ display: tabs["displayCharts"] }} xs={12}>
+          {/* LOGIC FOR SWITCHING BETWEEN LINE AND BAR CHART */}
           {chartType === CHART_TYPES.LINE && (
             <Line options={options} data={data} />
           )}
@@ -574,7 +611,11 @@ const CompareCars = () => {
           )}
         </Grid>
 
+        {/* RECORDS TABLE IMPLEMENTION */}
+        {/* MUI5 TABLE Component Docs: https://mui.com/material-ui/react-table/#main-content */}
+
         <Grid item xs={12}>
+          {/* Hides the table using CSS display property if Chart Drawer is selected */}
           <TableContainer
             sx={{ display: tabs["displayRecords"] }}
             component={Paper}
@@ -607,6 +648,7 @@ const CompareCars = () => {
                   </StyledTableCell>
                 </StyledTableRow>
               </TableHead>
+              {/* Renders the Table rows form filtered rows */}
               <TableBody>
                 {rows.map((row) => (
                   <StyledTableRow

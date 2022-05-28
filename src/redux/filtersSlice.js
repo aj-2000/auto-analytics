@@ -1,3 +1,4 @@
+// used stores and updates states of filters of data analyzer page using redux-toolkit
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialStateValue = {

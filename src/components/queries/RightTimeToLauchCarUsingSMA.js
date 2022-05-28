@@ -18,15 +18,6 @@ import styled from "styled-components";
 import { BASE_URL } from "../../consts/urls";
 import { chartColors, chartColorsV1, chartColorsV2 } from "../../consts/colors";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  boxShadow: 10,
-  p: 4,
-};
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -36,7 +27,19 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
 //Prediction Modal Styles
+// Docs: https://mui.com/material-ui/react-modal/
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  boxShadow: 10,
+  p: 4,
+};
+//Prediction Modal Styled Components
 const ModalTitle = styled.p`
   text-align: center;
 `;
@@ -46,10 +49,13 @@ const Month = styled.div``;
 const InfoContainer = styled.div``;
 
 function RightTimeToLauchCarUsingSMA() {
-  const [open, setOpen] = React.useState(false);
+  //Prediction Modal States
+  // Docs: https://mui.com/material-ui/react-modal/
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  //Chart Data
   const [labels, setLabels] = useState([]);
   const [economy, setEconomy] = useState([]);
   const [luxury, setLuxury] = useState([]);
@@ -66,42 +72,62 @@ function RightTimeToLauchCarUsingSMA() {
   const [monthsPrediction, setMonthsPrediction] = useState([]);
 
   useEffect(() => {
-    async function getQuerySevenData() {
+    async function getAnalysisData() {
+      // API Docs: https://github.com/aj-2000/autoapi
       const apiUrlOne = `${BASE_URL}/q7/1`;
       const apiUrlTwo = `${BASE_URL}/q7/2`;
-      const responseOne = await fetch(apiUrlOne, {
+      // Error Handling By Try-Catch Block
+      try {
+        // fetching chart analysis data
+      const responseChartData = await fetch(apiUrlOne, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
       });
-      const responseTwo = await fetch(apiUrlTwo, {
+      // fecthing month prediction data
+      const responsePredictionData= await fetch(apiUrlTwo, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
       });
-      const dataOne = await responseOne.json();
-      const dataTwo = await responseTwo.json();
-      const objOne = JSON.parse(dataOne);
-      const objTwo = JSON.parse(dataTwo);
+      
+      const fetchedReponseChartData = await responseChartData.json();
+      const fetchedReponsePredictionData = await responsePredictionData.json();
+
+      const chartData = JSON.parse(fetchedReponseChartData);
+      const predictionData = JSON.parse(fetchedReponsePredictionData);
+      //set data to chart
+      //xAxes values
       setLabels(MONTHS_LIST);
-      setEconomy(Object.values(objOne[0]));
-      setLuxury(Object.values(objOne[1]));
-      setMidRange(Object.values(objOne[2]));
-      setUltraLuxury(Object.values(objOne[3]));
-      setEconomySMA(Object.values(objOne[4]));
-      setLuxurySMA(Object.values(objOne[5]));
-      setMidRangeSMA(Object.values(objOne[6]));
-      setUltraLuxurySMA(Object.values(objOne[7]));
-      setEconomyDiff(Object.values(objOne[8]));
-      setLuxuryDiff(Object.values(objOne[9]));
-      setMidRangeDiff(Object.values(objOne[10]));
-      setUltraLuxuryDiff(Object.values(objOne[11]));
-      setMonthsPrediction(objTwo);
+      //line charts data
+      // SMA -> SIMPLE MOVING AVERAGE
+      //Diff = Values - SMA
+      //chartData index number based on data we recieved from server
+      setEconomy(Object.values(chartData[0]));
+      setLuxury(Object.values(chartData[1]));
+      setMidRange(Object.values(chartData[2]));
+      setUltraLuxury(Object.values(chartData[3]));
+      setEconomySMA(Object.values(chartData[4]));
+      setLuxurySMA(Object.values(chartData[5]));
+      setMidRangeSMA(Object.values(chartData[6]));
+      setUltraLuxurySMA(Object.values(chartData[7]));
+      setEconomyDiff(Object.values(chartData[8]));
+      setLuxuryDiff(Object.values(chartData[9]));
+      setMidRangeDiff(Object.values(chartData[10]));
+      setUltraLuxuryDiff(Object.values(chartData[11]));
+      //Prediction Modal data
+      setMonthsPrediction(predictionData);
+      } catch (error) {
+        //will print error to console if something goes wrong...
+        console.error(error)
+      }
     }
-    getQuerySevenData();
+    getAnalysisData();
   }, []);
+
+  //chart configurations
   const options = {
     responsive: true,
     scales: {
@@ -133,6 +159,7 @@ function RightTimeToLauchCarUsingSMA() {
       },
     },
   };
+  //chart data object
   const data = {
     labels,
     datasets: [
@@ -218,6 +245,7 @@ function RightTimeToLauchCarUsingSMA() {
         <Button onClick={handleOpen}>
           View Predctions and Deciding Criteria
         </Button>
+        {/* Predictions modal */}
         <Modal
           open={open}
           onClose={handleClose}
@@ -261,7 +289,7 @@ function RightTimeToLauchCarUsingSMA() {
           </Box>
         </Modal>
       </Box>
-
+      {/* chartjs line chart */}
       <Line options={options} data={data} />
     </Box>
   );

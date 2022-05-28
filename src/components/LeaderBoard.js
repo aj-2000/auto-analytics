@@ -1,3 +1,4 @@
+// Overview section component - top brands
 import React from "react";
 import styled from "styled-components";
 

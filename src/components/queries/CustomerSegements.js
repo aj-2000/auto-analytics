@@ -11,9 +11,10 @@ import {
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { BASE_URL } from "../../consts/urls";
-
+import { chartColors } from "../../consts/colors";
 ChartJS.register(RadialLinearScale, ArcElement, Tooltip, Legend);
 
+//Tabs options
 const tabs = [
   "Drive Train",
   "Transmission",
@@ -24,8 +25,11 @@ const tabs = [
 ];
 
 const CustomerSegements = () => {
+  //tabs options in integer format
   const [value, setValue] = useState(0);
+  //pie chart data
   const [series, setSeries] = useState([]);
+  //pie chart labels (DriveTrain, Transmission, Fuel, Class, etc)
   const [labels, setLabels] = useState([]);
 
   const data = {
@@ -34,16 +38,7 @@ const CustomerSegements = () => {
       {
         label: tabs[value],
         data: series,
-        backgroundColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-          "rgba(3, 62, 62, 1)",
-          "rgba(41, 52, 98, 1)",
-        ],
+        backgroundColor: chartColors,
         borderWidth: 1,
       },
     ],
@@ -52,26 +47,38 @@ const CustomerSegements = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  //Making API call for pie chart data
   useEffect(() => {
-    async function getQuerySixData() {
+    async function getCustomerSegmentsData() {
+      //using q6 of autoapi
       const apiUrl = `${BASE_URL}/q6/${value}`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const obj = JSON.parse(data);
-      console.log(obj);
-      setLabels(Object.keys(obj));
-      setSeries(Object.values(obj));
+      // Error Handling By Try-Catch Block
+      try{
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        //fetchedResponse data
+        const fetchedResponse = await response.json();
+        //javascript object
+        const chartData = JSON.parse(fetchedResponse);
+        //set chart data
+        setLabels(Object.keys(chartData));
+        setSeries(Object.values(chartData));
+      } catch(e){
+        //will print error object to javascript console, if something goes wrong.
+        console.error(e)
+      }
+      
     }
-    getQuerySixData();
-  }, [value]);
+    getCustomerSegmentsData();
+  }, [value]); //will rerender chart when tabs are toggle
+
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+      {/* MUI 5 Tabs Doc: https://mui.com/material-ui/react-tabs/#main-content */}
       <Tabs
         value={value}
         onChange={handleChange}

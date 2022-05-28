@@ -1,3 +1,4 @@
+// Overview section component
 import React from "react";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";

@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../../consts/urls";
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,7 +23,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
+//chart configurations
 const options = {
   responsive: true,
   interaction: {
@@ -32,14 +31,8 @@ const options = {
     intersect: false,
   },
   stacked: false,
-  plugins: {
-    title: {
-      display: false,
-      text: "Chart.js Line Chart - Multi Axis",
-    },
-  },
-  scales: {
 
+  scales: {
     y: {
       type: "linear",
       display: true,
@@ -77,47 +70,55 @@ const options = {
 };
 
 const SalesVariationByConsumerSentiment = () => {
-  const [seriesOne, setSeriesOne] = useState([]);
-  const [seriesTwo, setSeriesTwo] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [consumerSentiment, setConsumerSentiment] = useState([]);
+  // xAxes dates
   const [labels, setLabels] = useState([]);
   useEffect(() => {
-    async function getQueryNineData() {
+    async function getChartData() {
+      // API DOCS: https://github.com/aj-2000/autoapi
       const apiUrl = `${BASE_URL}/q9`;
-      const response = await fetch(apiUrl, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      });
-      const data = await response.json();
-      const obj = JSON.parse(data);
-      console.log(obj);
-      setLabels(Object.values(obj["Date"]));
-      setSeriesOne(Object.values(obj["Total Sales"]));
-      setSeriesTwo(Object.values(obj["Consumer Sentiment"]));
+      // Error Handling By Try-Catch Block
+      try {
+        const response = await fetch(apiUrl, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        });
+        const fetchedResponse = await response.json();
+        const chartData = JSON.parse(fetchedResponse);
+        setLabels(Object.values(chartData["Date"]));
+        setSales(Object.values(chartData["Total Sales"]));
+        setConsumerSentiment(Object.values(chartData["Consumer Sentiment"]));
+      } catch (error) {
+        //will print error to console if something goes wrong
+        console.error(error);
+      }
     }
-    getQueryNineData();
+    getChartData();
   }, []);
+  // chart data object
   const data = {
     labels,
     datasets: [
       {
         label: "Sales",
-        data: seriesOne,
+        data: sales,
         borderColor: chartColorsV2[0],
         backgroundColor: chartColors[0],
         yAxisID: "y",
       },
       {
         label: "Consumer Sentiment",
-        data: seriesTwo,
+        data: consumerSentiment,
         borderColor: chartColorsV2[1],
         backgroundColor: chartColors[1],
         yAxisID: "y1",
       },
     ],
   };
-
+  // chartJs line chart
   return <Line options={options} data={data} />;
 };
 

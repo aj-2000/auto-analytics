@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { BASE_URL } from "../../consts/urls";
 
+//Styles for table
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -31,10 +32,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function MostExpensiveCarBrands() {
+  //table rows
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    async function getQueryTwoData() {
+    async function getTableData() {
+      // API Docs: https://github.com/aj-2000/autoapi
       const apiUrl = `${BASE_URL}/q2/`;
+      //using query of auto api
+      try {
       const response = await fetch(apiUrl, {
         headers: {
           "Content-Type": "application/json",
@@ -42,13 +47,18 @@ function MostExpensiveCarBrands() {
         },
       });
       const tableData = await response.json();
-      const obj = JSON.parse(tableData);
-      setRows(obj);
+      const rowsData = JSON.parse(tableData);
+      setRows(rowsData);
+      } catch (error) {
+        //will print error to console if something goes wrong...
+        console.error(error)
+      }
     }
-    getQueryTwoData();
+    getTableData();
   }, []);
-  console.log(rows);
+
   return (
+    //rendering table : mui5 table component
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

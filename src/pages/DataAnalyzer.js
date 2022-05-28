@@ -27,6 +27,7 @@ export default function IconTabs() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+          {/* MUI5 Tabs Docs: https://mui.com/material-ui/react-tabs/#main-content */}
           <Tabs
             value={value}
             onChange={handleChange}

@@ -71,7 +71,9 @@ const SalesForecast = () => {
   const [qValue, setQValue] = useState(1);
   const [nLags, setNLags] = useState(1);
   const [numberOfForecasts, setNumberOfForecasts] = useState(5);
+  // used to error message if failed to mid model to data 
   const [error, setError] = useState(null);
+  // used to show linear progress bar
   const [isLoading, setIsLoading] = useState(false);
 
   // Responsible of handling modal which show forecasts
@@ -111,7 +113,8 @@ const SalesForecast = () => {
       },
       body: JSON.stringify({ file_url: fileURL }),
     };
-    //will fit model to data and set diffrent chart accuracy data
+    // Below code will fit model to data and set diffrent chart accuracy parameters values
+    // Error Handling By Try-Catch Block
     try {
       const fetchResponse = await fetch(apiUrl, requestOptions);
       const data = await fetchResponse.json();
@@ -125,6 +128,7 @@ const SalesForecast = () => {
       setIsModelFitted(true);
       setUpdateModelAccuracyChart(!updateModelAccuracyChart);
     } catch (e) {
+      //will used to print error message
       setError(e);
       setIsModelFitted(false);
       console.log(e);
