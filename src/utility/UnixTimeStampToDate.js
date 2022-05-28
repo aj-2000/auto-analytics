@@ -5,9 +5,12 @@ export default function unixTimeStampToDate(unixTimeStamp) {
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
     let date = new Date(unixTimeStamp);
     // Hours part from the timestamp
-    let dateString = date.toString().substring(0, 15);
+    let dateString = date.toString();
     //short time part from the timestamp
     date = new Date(dateString);
-    let finalDateSting = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+    // date.getDate() returns 1-31
+    // date.getFullYear() returns year
+    // date.getMonth() returns 0-11
+    let finalDateSting = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
     return finalDateSting;
 }

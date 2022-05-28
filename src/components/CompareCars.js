@@ -505,7 +505,7 @@ const CompareCars = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid  item xs={12}>
           {/* Alert */}
           {rows.length === 0 && (
             <Alert severity="info">
@@ -520,88 +520,90 @@ const CompareCars = () => {
           )}
         </Grid>
         {/* Inputs Fields related to Charts */}
-        <Grid item xs={12}>
-          <ToggleButtonGroup
-            fullWidth
-            color="primary"
-            value={chartType}
-            exclusive
-            onChange={handleChartType}
-          >
-            <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
-            <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
-          </ToggleButtonGroup>
-        </Grid>
-        <Grid item xs={12}>
-          {/*Chart Title */}
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            onChange={handleChartTitle}
-            label="Chart Title"
-            variant="outlined"
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <FormControl fullWidth>
-            {/*Select Xaxis Data Set */}
-            <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
-            <Select
-              labelId="xaxis-data-select-label"
-              id="xaxis-data"
-              value={xTitle}
-              label="Manufacturer"
-              onChange={handleXDataSet}
+        {/* showing chart field and charts only if chart drawing option is enabled */}
+        }
+        <Grid container spacing={2} sx={{ display: tabs["displayCharts"] }} xs={12}>
+          <Grid item xs={12}>
+            <ToggleButtonGroup
+              fullWidth
+              color="primary"
+              value={chartType}
+              exclusive
+              sx={{marginTop:'1rem'}}
+              onChange={handleChartType}
             >
-              {PROPERTIES_LIST.map((itm) => (
-                <MenuItem value={itm} key={itm}>
-                  {itm}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4}>
-          <FormControl fullWidth>
-            {/*Select Yaxis data set one */}
-            <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
-            <Select
-              labelId="dataset-one-select-label"
-              id="dataset-one"
-              value={yDataSetOneLabel}
-              label="DATASET 1"
-              onChange={handleYDataSetOneLabel}
-            >
-              {Y_DATA_LIST.map((itm) => (
-                <MenuItem value={itm} key={itm}>
-                  {itm}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
+              <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
+              <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+          <Grid item xs={12}>
+            {/*Chart Title */}
+            <TextField
+              fullWidth
+              id="outlined-basic"
+              onChange={handleChartTitle}
+              label="Chart Title"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              {/*Select Xaxis Data Set */}
+              <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
+              <Select
+                labelId="xaxis-data-select-label"
+                id="xaxis-data"
+                value={xTitle}
+                label="Manufacturer"
+                onChange={handleXDataSet}
+              >
+                {PROPERTIES_LIST.map((itm) => (
+                  <MenuItem value={itm} key={itm}>
+                    {itm}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              {/*Select Yaxis data set one */}
+              <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
+              <Select
+                labelId="dataset-one-select-label"
+                id="dataset-one"
+                value={yDataSetOneLabel}
+                label="DATASET 1"
+                onChange={handleYDataSetOneLabel}
+              >
+                {Y_DATA_LIST.map((itm) => (
+                  <MenuItem value={itm} key={itm}>
+                    {itm}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
 
-        <Grid item xs={4}>
-          <FormControl fullWidth>
-            {/*Select Yaxis data se 2 */}
-            <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
-            <Select
-              labelId="dataset-two-select-label"
-              id="dataset-two"
-              value={yDataSetTwoLabel}
-              label="DATASET 2"
-              onChange={handleYDataSetTwoLabel}
-            >
-              {Y_DATA_LIST.map((itm) => (
-                <MenuItem value={itm} key={itm}>
-                  {itm}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        {/*  */}
-        <Grid item sx={{ display: tabs["displayCharts"] }} xs={12}>
+          <Grid item xs={4}>
+            <FormControl fullWidth>
+              {/*Select Yaxis data se 2 */}
+              <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
+              <Select
+                labelId="dataset-two-select-label"
+                id="dataset-two"
+                value={yDataSetTwoLabel}
+                label="DATASET 2"
+                onChange={handleYDataSetTwoLabel}
+              >
+                {Y_DATA_LIST.map((itm) => (
+                  <MenuItem value={itm} key={itm}>
+                    {itm}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           {/* LOGIC FOR SWITCHING BETWEEN LINE AND BAR CHART */}
           {chartType === CHART_TYPES.LINE && (
             <Line options={options} data={data} />
@@ -610,10 +612,8 @@ const CompareCars = () => {
             <Bar options={options} data={data} />
           )}
         </Grid>
-
         {/* RECORDS TABLE IMPLEMENTION */}
         {/* MUI5 TABLE Component Docs: https://mui.com/material-ui/react-table/#main-content */}
-
         <Grid item xs={12}>
           {/* Hides the table using CSS display property if Chart Drawer is selected */}
           <TableContainer

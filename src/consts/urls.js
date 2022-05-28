@@ -1,4 +1,4 @@
-// all components get api server url from this file
+// all components get api server base url from this file
 // Local API server url
 // export const BASE_URL =  'http://127.0.0.1:8000'
 // Hosted API server url

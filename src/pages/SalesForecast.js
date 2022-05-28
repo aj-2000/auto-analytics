@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -70,7 +70,7 @@ const SalesForecast = () => {
   const [pValue, setPValue] = useState(1);
   const [qValue, setQValue] = useState(1);
   const [numberOfForecasts, setNumberOfForecasts] = useState(5);
-  // used to error message if failed to mid model to data 
+  // used to error message if failed to mid model to data
   const [error, setError] = useState(null);
   // used to show linear progress bar
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +94,16 @@ const SalesForecast = () => {
     setNumberOfForecasts(event.target.value);
   };
 
-  const apiUrl = `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/${1}/`;
+  const apiUrl = `${BASE_URL}/forecast/${pValue}/${qValue}/${numberOfForecasts}/2`;
+
+  //FIX: disables view forecast and clear resets model accuracy details option if file url changes
+  useEffect(() => {
+    setIsModelFitted(false);
+    setRootMeanSquaredError('');
+    setIsSeriesStationary('');
+    setMeanAbsolutePercentageError('')
+    setResidualSumOfSquares('')
+  }, [fileURL]);
 
   //function responsible for fitting data to model using django rest api
   async function fitModelWithData() {
@@ -127,7 +136,6 @@ const SalesForecast = () => {
       //will used to print error message
       setError(e);
       setIsModelFitted(false);
-      console.log(e);
     }
     setIsLoading(false);
   }
@@ -170,7 +178,7 @@ const SalesForecast = () => {
             defaultValue="1"
           />
         </Grid>
-        
+
         <Grid item xs={4}>
           <TextField
             fullWidth
@@ -181,41 +189,7 @@ const SalesForecast = () => {
             defaultValue="5"
           />
         </Grid>
-        <Grid item xs={12}>
-          <Alert icon={false} severity="info">
-            MODEL ACCURACY DETAILS
-          </Alert>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Item>
-            ROOT MEAN SQUARED ERROR : <strong>{rootMeanSquaredError}</strong>
-          </Item>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Item>
-            MEAN ABSOLUTE PERCENTAGE ERROR :{" "}
-            <strong>{meanAbsolutePercentageError}%</strong>
-          </Item>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Item>
-            RESIDUAL SUM OF SQUARES : <strong>{residualSumOfSquares}</strong>
-          </Item>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Item>
-            IS SERIES STATIONARY? : <strong>{isSeriesStationary}</strong>
-          </Item>
-        </Grid>
-        <Grid item xs={12}>
-          {isSeriesStationary === "NO" && (
-            <Alert severity="warning">
-              The time series with trends, or with seasonality, are not
-              stationary — the trend and seasonality will affect the value of
-              the time series at different times.
-            </Alert>
-          )}
-        </Grid>
+
         <Grid item xs={12} lg={8}>
           {/* ModelAccuracyChart */}
           {!isModelFitted && (
@@ -225,9 +199,11 @@ const SalesForecast = () => {
           )}
           {isModelFitted && (
             <ModelAccuracyChart
-              apiUrl={apiUrl}
-              updateChart={updateModelAccuracyChart}
+              pValue={pValue}
+              qValue={qValue}
               fileURL={fileURL}
+              numberOfForecasts={numberOfForecasts}
+              updateModelAccuracyChart={updateModelAccuracyChart}
             />
           )}
         </Grid>
@@ -245,44 +221,44 @@ const SalesForecast = () => {
             >
               VIEW FORECAST
             </Button>
-            {/* Instructions for sales forecast feature */}
-            <Alert
-              sx={{ height: "auto" }}
-              icon={<QuestionMarkIcon />}
-              severity="success"
-            >
-              <AlertTitle>
-                <strong>HOW TO USE IT?</strong>
-              </AlertTitle>
-              <strong>STEP 1.</strong> Enter CSV file direct URL.
-              <br />
-              <i>
-                CSV File should contain the first column as Proper Unique Dates{" "}
-                <strong>(DD/MM/YYYY, MM/YYYY)</strong> and Second column as
-                Sales values. All other columns will be ignored.
-              </i>
-              <br />
-              <strong>STEP 2.</strong> Fit model to data.
-              <br />
-              <strong>STEP 3.</strong> View forecasted values
-              <br />
-              <strong>ADDITIONAL INFO</strong>
-              <br />
-              1. You can also try different combinations of P, Q and nLags
-              values to increase accuracy.
-              <br />
-              <i>
-                2. nLags Value should be less than half the number of data
-                points.
-              </i>
-              <br />
-              <i>
-                <strong>
-                  3. Combination with less Residual Sum of Squares value will be
-                  better.
-                </strong>
-              </i>
-            </Alert>
+            <Grid item xs={12}>
+              <Alert icon={false} severity="info">
+                MODEL ACCURACY DETAILS
+              </Alert>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Item>
+                ROOT MEAN SQUARED ERROR :{" "}
+                <strong>{rootMeanSquaredError}</strong>
+              </Item>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Item>
+                MEAN ABSOLUTE PERCENTAGE ERROR :{" "}
+                <strong>{meanAbsolutePercentageError}%</strong>
+              </Item>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Item>
+                RESIDUAL SUM OF SQUARES :{" "}
+                <strong>{residualSumOfSquares}</strong>
+              </Item>
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Item>
+                IS SERIES STATIONARY? : <strong>{isSeriesStationary}</strong>
+              </Item>
+            </Grid>
+            <Grid item xs={12}>
+              {/* Shows warning about non stationry series if series is not stationary and model is fitted */}
+              {isSeriesStationary === "NO" && isModelFitted === true && (
+                <Alert severity="warning">
+                  The time series with trends, or with seasonality, are not
+                  stationary — the trend and seasonality will affect the value
+                  of the time series at different times.
+                </Alert>
+              )}
+            </Grid>
           </Stack>
         </Grid>
         <Grid item xs={12}>
@@ -297,9 +273,39 @@ const SalesForecast = () => {
               {/* SalesForecastChart funcional react component showing line chart ploted by
               forcasted values
                */}
-              <SalesForecastChart apiUrl={apiUrl} fileURL={fileURL} />
+              <SalesForecastChart
+                pValue={pValue}
+                qValue={qValue}
+                fileURL={fileURL}
+                numberOfForecasts={numberOfForecasts}
+                updateModelAccuracyChart={updateModelAccuracyChart}
+              />
             </Box>
           </Modal>
+        </Grid>
+        {/* Instructions for sales forecast feature */}
+        <Grid item xs={12}>
+          <Alert
+            sx={{ height: "auto" }}
+            icon={<QuestionMarkIcon />}
+            severity="success"
+          >
+            <AlertTitle>
+              <strong>HOW TO USE IT?</strong>
+            </AlertTitle>
+            STEP 1. Enter CSV file direct URL.<br/>
+            <i>CSV File should contain the first
+            column Dates (DD/MM/YYYY, MM/YYYY) and the second column as Sales
+            values. All other columns will be ignored.</i><br/>
+            STEP 2. Fit model to data. <br/>
+            STEP 3. View forecasts. <br/>
+            <b>ADDITIONAL INFO</b> 
+            1. You can also try different combinations of P and Q to increase accuracy.<br/>
+            2. Combination with less Residual Sum of Squares value will be better. <br/>
+            3. Value of P and Q should not be very large. <br/>
+            <b>4. If stuck in infinite loading, you should consider decreasing the values of P and Q
+            and try again after a few seconds.</b><br/>
+          </Alert>
         </Grid>
       </Grid>
     </Box>
