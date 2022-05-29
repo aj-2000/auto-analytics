@@ -7,6 +7,8 @@ Welcome to Auto Analytics GitHub Repository.
 
 Auto Analytics is a ReactJS based web application with a Django based backend API server. It has Four components :-
 
+> [Auto Analytics Web App](https://autoanalytics.vercel.app)
+
 **1. Dashboard**: A information management tool that displays various analysis using various types of charts and tables based on the different datasets related to the automobile industry to track the status of the automobile industry and make informed decisions.
 *	Included Analyses:
     * Different Customer Segments.
@@ -73,11 +75,11 @@ Visit [AUTO API](https://github.com/aj-2000/autoapi) Repository for Installation
 * **[NumPy](https://numpy.org/)**: NumPy is a library for the Python programming language, adding support for large, multi-dimensional arrays and matrices, along with a large collection of high-level mathematical functions to operate on these arrays.
 * **[Stats Model](https://www.statsmodels.org/stable/index.html)**: statsmodels is a Python module that provides classes and functions for the estimation of many different statistical models, as well as for conducting statistical tests, and statistical data exploration. An extensive list of result statistics are available for each estimator.
 
-> [Auto Analytics Web App](https://autoanalytics.vercel.app)
+
 
 ## Application Architecture
 
-![](https://github.com/aj-2000/auto-analytics/blob/master/Engage%20Project%20Application%20Architecture.png)
+![](https://raw.githubusercontent.com/aj-2000/auto-analytics/master/ApplicationStructure.png)
 
 # **How to Set up *`Auto Analytics`* for Development ?**
 
@@ -140,7 +142,7 @@ Visit [AUTO API](https://github.com/aj-2000/autoapi) Repository for Installation
 
 ## **Configure BACKEND API URL to Frontend**
 
-###  in autoanalytics/src/consts/urls.js
+###  in auto-analytics/src/consts/urls.js
 ```bash
-const BASE_URL = "BACKEND_SERVER_URL" // https://localhost:8000 or https://engage-autoapi.herokuapp.com
+export const BASE_URL = "BACKEND_SERVER_URL" // https://localhost:8000 or https://engage-autoapi.herokuapp.com
 ```
