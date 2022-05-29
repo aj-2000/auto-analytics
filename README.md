@@ -7,39 +7,58 @@ Welcome to Auto Analytics GitHub Repository.
 
 Auto Analytics is a ReactJS based web application with a Django based backend API server. It has Four components :-
 
-* **Dashboard**: A information management tool that displays various analyses using various types of charts and tables based on the different datasets related to the automobile industry to track the status of the automobile industry and make informed decisions.
-	Included Analyses:
-Different Customer Segments.
-Top 5 Countries by cars production, sales & exports.
-Top automakers worldwide by earnings, revenue, market cap & employee count.
-Sales variation with consumer sentiment.
-Relationship between price and mileage.
-Sales volume comparison of top 10 brands.
-Top 5 worst and best performers in car sales.
-Top 5 Expensive car brands
-Growth of passenger cars produced in India
-The right time to launch the car using Simple Moving Average (SMA) Analyses with a prediction of months with the best performance.
-Top Brand in cars sales month and year wise.
-Sales in current year and month with an indicator which whether they are increased or decreased.
+**1. Dashboard**: A information management tool that displays various analysis using various types of charts and tables based on the different datasets related to the automobile industry to track the status of the automobile industry and make informed decisions.
+*	Included Analyses:
+    * Different Customer Segments.
+	* Top 5 Countries by cars production, sales & exports.
+	* Top automakers worldwide by earnings, revenue, market cap & employee count.
+	* Sales variation with consumer sentiment.
+	* Relationship between price and mileage.
+	* Sales volume comparison of top 10 brands.
+	* Top 5 worst and best performers in car sales.
+	* Top 5 Expensive car brands
+	* Growth of passenger cars produced in India
+	* The right time to launch the car using Simple Moving Average (SMA) Analyses with a prediction of months with the best performance.
+	* Top Brand in cars sales month and year wise.
+	* Sales in current year and month with an indicator which whether they are increased or decreased.
+  <br/><br/>
 
-* **Data Analyzer**: A tool that allows the user to analyze the data set by applying ordering and various filters. Users can view filtered the data in a form table and can also plot line charts and bar charts using filtered data, which helps the user to visualize the data in a better way and make better decisions.
+**2. Data Analyzer**: A tool that allows the user to analyze the data set by applying ordering and various filters. Users can view filtered the data in a form table and can also plot line charts and bar charts using filtered data, which helps the user to visualize the data in a better way and make better decisions.
 	Supported Chart Types: Multi Axes Line and Bar Chart.
-	Filters: Manufacturer, Fuel Type, Transmission type, Price, Year, Mileage, Engine Volume (CC), Power, & No. of seats
-	Order By: Name, Manufacturer, Year, Engine Volume (CC), Power, Seats, Mileage, Price, & AverageYearlySales.
+* Filters: 
+	* Manufacturer
+	* Fuel Type
+	* Transmission type
+	* Price
+	* Year
+	* Mileage
+	* Engine Volume (CC)
+	* Power
+     *  No. of seats
+  <br/><br/>
+* Order By: 
+	 * Name Manufacturer Year
+	 * Engine Volume (CC)
+     * Power
+	 * Seats
+	 * Mileage
+	 * Price
+	 * AverageYearlySales.
+  
  Any number of filters can be applied at the same time.
 
-* **Sales Forecast**: A sales forecasting tool that allows the user to put a link to a sales dataset, then the user can predict the future sales based on previous sales data, which can be beneficial in many ways. This feature uses the AMIRA Time series, analysis Model.
-	Features: 
-Any CSV Dataset with the first column as Dates and the second column as Numerical values (sales) is supported.
-Users can optimise the forecasting model by using different values of "p" and "q". "p" and "q" are parameters of the ARIMA(p,d,q) equation. This model assumes the value of "d" to be 1.
-Displays various model accuracy metrics such as Root Mean Squared Error(RMSE), Mean Absolute Percentage Error(MAPE), and Residual Sum Of Squares(RSS) Value.
-Tells whether the given data is stationary or not using Dickey-Fuller Test.
-Shows model accuracy by showing a visual comparison between actual and predicted values.
-Applicable for both stationary and non-stationary datasets.
-* **AUTO API**: A Django based REST API, which executes queries and processes datasets and sends processed information to the frontend client in JSON format, so a user can view it to make informed decisions.
+**3. Sales Forecast**: A sales forecasting tool that allows the user to put a link to a sales dataset, then the user can predict the future sales based on previous sales data, which can be beneficial in many ways. This feature uses the AMIRA Time series, analysis Model.
+* Features: 
+	* Any CSV Dataset with the first column as Dates and the second column as Numerical values (sales) is supported.
+	* Users can optimise the forecasting model by using different values of "p" and "q". "p" and "q" are parameters of the ARIMA(p,d,q) equation. This model assumes the value of "d" to be 1.
+	* Displays various model accuracy metrics such as Root Mean Squared Error(RMSE), Mean Absolute Percentage Error(MAPE), and Residual Sum Of Squares(RSS) Value.
+	* Tells whether the given data is stationary or not using Dickey-Fuller Test.
+	* Shows model accuracy by showing a visual comparison between actual and predicted values.
+	* Applicable for both stationary and non-stationary datasets.
+**4. AUTO API**: A Django based REST API, which executes queries and processes datasets and sends processed information to the frontend client in JSON format, so a user can view it to make informed decisions.
 Visit AUTO-API repo for API docs and Installation details.
-
-
+> [AUTOAPI Service](https://engage-autoapi.herokuapp.com)
+Visit [AUTO API](https://github.com/aj-2000/autoapi) Repository for Installation Process and API Docs.
 
 ## **Technologies used :-**
 * **[ReactJS](https://www.djangoproject.com/)**: React is a free and open-source front-end JavaScript library for building user interfaces based on UI components. It is maintained by Meta and a community of individual developers and companies.
@@ -119,7 +138,7 @@ It builds the app for production to the `build` folder. It correctly bundles Rea
 
 Visit [AUTO API](https://github.com/aj-2000/autoapi) Repository for Installation Process and API Docs.
 
-## **Congigure BACKEND API URL to Frondend**
+## **Configure BACKEND API URL to Frontend**
 
 ###  in autoanalytics/src/consts/urls.js
 ```bash
