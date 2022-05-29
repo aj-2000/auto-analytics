@@ -57,6 +57,7 @@ Auto Analytics is a ReactJS based web application with a Django based backend AP
 	* Tells whether the given data is stationary or not using Dickey-Fuller Test.
 	* Shows model accuracy by showing a visual comparison between actual and predicted values.
 	* Applicable for both stationary and non-stationary datasets.
+	
 **4. AUTO API**: A Django based REST API, which executes queries and processes datasets and sends processed information to the frontend client in JSON format, so a user can view it to make informed decisions.
 Visit AUTO-API repo for API docs and Installation details.
 > [AUTOAPI Service](https://engage-autoapi.herokuapp.com)
