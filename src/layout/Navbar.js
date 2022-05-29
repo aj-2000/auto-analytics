@@ -18,6 +18,7 @@ const pages = [["DASHBOARD"], ["DATA ANALYZER"], ["SALES FORECAST"]];
 
 //function responsibe for opening and closing of menu 
 const Navbar = () => {
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   //useNavigate() hook provided by ReactRouterDOM V6
   //DOCs: https://reactrouter.com/docs/en/v6
@@ -31,13 +32,13 @@ const Navbar = () => {
   const handleCloseNavMenu = (event, page) => {
     if (page === pages[0]) {
       //if requested page is Dashboard
-      navigate("/", { replace: true });
+      navigate("/", { replace: false });
     } else if (page === pages[1]) {
       //if requested page is Data Analyzer
-      navigate("/analyzer", { replace: true });
+      navigate("/analyzer", { replace: false });
     } else if (page === pages[2]) {
       //if requested page is Sales Forecast
-      navigate("/forecast", { replace: true });
+      navigate("/forecast", { replace: false });
     }
     setAnchorElNav(null);
   };
@@ -45,17 +46,17 @@ const Navbar = () => {
   // Responsible for navigation between pages on mid to large screens devices(using Navbar menu)
   // MUI5 AppBar Component, DOCs: https://mui.com/material-ui/react-app-bar/
   function handleAnalyzer() {
-    navigate("/analyzer", { replace: true });
+    navigate("/analyzer", { replace: false });
     setAnchorElNav(null);
   }
 
   function handleDashboard() {
-    navigate("/", { replace: true });
+    navigate("/", { replace: false });
     setAnchorElNav(null);
   }
 
   function handleForecast() {
-    navigate("/forecast", { replace: true });
+    navigate("/forecast", { replace: false });
     setAnchorElNav(null);
   }
 

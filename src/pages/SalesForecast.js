@@ -295,7 +295,7 @@ const SalesForecast = () => {
             </AlertTitle>
             STEP 1. Enter CSV file direct URL.<br/>
             <i>CSV File should contain the first
-            column Dates (DD/MM/YYYY, MM/YYYY) and the second column as Sales
+            column as Dates <b>(DD/MM/YYYY, MM/YYYY)</b> and the second column as Sales
             values. All other columns will be ignored.</i><br/>
             STEP 2. Fit model to data. <br/>
             STEP 3. View forecasts. <br/>

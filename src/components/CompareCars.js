@@ -79,11 +79,12 @@ const CompareCars = () => {
   //for changing and accessing redux store filter states
   const dispatch = useDispatch();
 
+    // tabs value (chart or records) from redux store
+    const tabs = useSelector((state) => state.tabs);
+
   // accessing filters slice from redux store
   const filters = useSelector((state) => state.filters);
 
-  // tabs value (chart or records) from redux store
-  const tabs = useSelector((state) => state.tabs);
 
   // Using cars api of auto api
   // API DOCS: https://github.com/aj-2000/autoapi
@@ -230,9 +231,7 @@ const CompareCars = () => {
   };
 
   useEffect(() => {
-    // fix: synchorization of states between toggle component and redux store tabsSlice
-    // if set tabs value to Chart Drawer, everytime Data analyzer page loads.
-    dispatch(viewCharts());
+
     // fetches filtered cars data from api using autoapi's car api
     // API Docs: https://github.com/aj-2000/autoapi
 
@@ -292,6 +291,15 @@ const CompareCars = () => {
       },
     },
     scales: {
+      xAxes: {
+        title: {
+          display: true,
+          text: xTitle,
+          font: {
+            size: 20,
+          },
+        },
+      },
       y: {
         type: "linear",
         display: true,
@@ -521,7 +529,7 @@ const CompareCars = () => {
         </Grid>
         {/* Inputs Fields related to Charts */}
         {/* showing chart field and charts only if chart drawing option is enabled */}
-        }
+
         <Grid container spacing={2} sx={{ display: tabs["displayCharts"] }} xs={12}>
           <Grid item xs={12}>
             <ToggleButtonGroup
