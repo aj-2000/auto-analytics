@@ -6,6 +6,7 @@ import {
   InputLabel,
   FormControl,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -46,7 +47,6 @@ import {
 import { Box } from "@mui/material";
 import { BASE_URL } from "../consts/urls";
 import { chartColors, chartColorsV2 } from "../consts/colors";
-import { viewCharts } from "../redux/tabsSlice";
 
 //Reponsible for table styles
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -79,12 +79,11 @@ const CompareCars = () => {
   //for changing and accessing redux store filter states
   const dispatch = useDispatch();
 
-    // tabs value (chart or records) from redux store
-    const tabs = useSelector((state) => state.tabs);
+  // tabs value (chart or records) from redux store
+  const tabs = useSelector((state) => state.tabs);
 
   // accessing filters slice from redux store
   const filters = useSelector((state) => state.filters);
-
 
   // Using cars api of auto api
   // API DOCS: https://github.com/aj-2000/autoapi
@@ -108,6 +107,8 @@ const CompareCars = () => {
   // stores all filtered records data
   const [rows, setRows] = useState([]);
 
+  //loading indicator
+  const [isLoading, setIsLoading] = useState(false);
   //ChartDrawerStates
   const [chartType, setChartType] = useState(CHART_TYPES.LINE);
   const [xTitle, setXTitle] = useState("Name");
@@ -231,13 +232,13 @@ const CompareCars = () => {
   };
 
   useEffect(() => {
-
     // fetches filtered cars data from api using autoapi's car api
     // API Docs: https://github.com/aj-2000/autoapi
 
     async function getFilteredCarsData() {
       //Error Handling by Try-Catch block
       try {
+        setIsLoading(true);
         const response = await fetch(apiUrl, {
           headers: {
             "Content-Type": "application/json",
@@ -247,7 +248,9 @@ const CompareCars = () => {
         const fetchedResponse = await response.json();
         const recordsData = JSON.parse(fetchedResponse);
         setRows(recordsData);
+        setIsLoading(false);
       } catch (error) {
+        setIsLoading(false);
         //will print error to console if something goes wrong
         console.error(error);
       }
@@ -513,14 +516,16 @@ const CompareCars = () => {
             variant="outlined"
           />
         </Grid>
-        <Grid  item xs={12}>
+        <Grid item xs={12}>
           {/* Alert */}
-          {rows.length === 0 && (
+          {/* loading bar */}
+          {isLoading && <LinearProgress />}
+          {rows.length === 0 && !isLoading && (
             <Alert severity="info">
               <b>No matching records found.</b>
             </Alert>
           )}
-          {rows.length !== 0 && (
+          {rows.length !== 0 && !isLoading && (
             <Alert severity="info">
               <b>{rows.length} records found.</b> <br />{" "}
               <i>Set Max Records to 0 to view all matching records.</i>
@@ -529,170 +534,190 @@ const CompareCars = () => {
         </Grid>
         {/* Inputs Fields related to Charts */}
         {/* showing chart field and charts only if chart drawing option is enabled */}
-
-        <Grid container spacing={2} sx={{ display: tabs["displayCharts"] }} xs={12}>
-          <Grid item xs={12}>
-            <ToggleButtonGroup
-              fullWidth
-              color="primary"
-              value={chartType}
-              exclusive
-              sx={{marginTop:'1rem'}}
-              onChange={handleChartType}
-            >
-              <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
-              <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
-            </ToggleButtonGroup>
-          </Grid>
-          <Grid item xs={12}>
-            {/*Chart Title */}
-            <TextField
-              fullWidth
-              id="outlined-basic"
-              onChange={handleChartTitle}
-              label="Chart Title"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth>
-              {/*Select Xaxis Data Set */}
-              <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
-              <Select
-                labelId="xaxis-data-select-label"
-                id="xaxis-data"
-                value={xTitle}
-                label="Manufacturer"
-                onChange={handleXDataSet}
-              >
-                {PROPERTIES_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={4}>
-            <FormControl fullWidth>
-              {/*Select Yaxis data set one */}
-              <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
-              <Select
-                labelId="dataset-one-select-label"
-                id="dataset-one"
-                value={yDataSetOneLabel}
-                label="DATASET 1"
-                onChange={handleYDataSetOneLabel}
-              >
-                {Y_DATA_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={4}>
-            <FormControl fullWidth>
-              {/*Select Yaxis data se 2 */}
-              <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
-              <Select
-                labelId="dataset-two-select-label"
-                id="dataset-two"
-                value={yDataSetTwoLabel}
-                label="DATASET 2"
-                onChange={handleYDataSetTwoLabel}
-              >
-                {Y_DATA_LIST.map((itm) => (
-                  <MenuItem value={itm} key={itm}>
-                    {itm}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          {/* LOGIC FOR SWITCHING BETWEEN LINE AND BAR CHART */}
-          {chartType === CHART_TYPES.LINE && (
-            <Line options={options} data={data} />
-          )}
-          {chartType === CHART_TYPES.BAR && (
-            <Bar options={options} data={data} />
-          )}
-        </Grid>
-        {/* RECORDS TABLE IMPLEMENTION */}
-        {/* MUI5 TABLE Component Docs: https://mui.com/material-ui/react-table/#main-content */}
         <Grid item xs={12}>
-          {/* Hides the table using CSS display property if Chart Drawer is selected */}
-          <TableContainer
-            sx={{ display: tabs["displayRecords"] }}
-            component={Paper}
+          <Grid
+            container
+            spacing={2}
+            sx={{ display: tabs["displayCharts"] }}
+            xs={12}
           >
-            <Table aria-label="simple table">
-              <TableHead>
-                <StyledTableRow>
-                  <StyledTableCell align="center"> Name </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {" "}
-                    Manufacturer{" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center"> Year </StyledTableCell>
-                  <StyledTableCell align="center"> Fuel Type </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {" "}
-                    Transmission{" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center"> Engine CC </StyledTableCell>
-                  <StyledTableCell align="center"> Power </StyledTableCell>
-                  <StyledTableCell align="center"> Seats </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {" "}
-                    Mileage(KM/L){" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center"> Price </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {" "}
-                    Average Yearly Sales{" "}
-                  </StyledTableCell>
-                </StyledTableRow>
-              </TableHead>
-              {/* Renders the Table rows form filtered rows */}
-              <TableBody>
-                {rows.map((row) => (
-                  <StyledTableRow
-                    key={row.Name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {row.Name}
+            <Grid item xs={12}>
+              <ToggleButtonGroup
+                fullWidth
+                color="primary"
+                value={chartType}
+                exclusive
+                sx={{ marginTop: "1rem" }}
+                onChange={handleChartType}
+              >
+                <ToggleButton value={CHART_TYPES.LINE}>LINE</ToggleButton>
+                <ToggleButton value={CHART_TYPES.BAR}>BAR</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={12}>
+              {/*Chart Title */}
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                onChange={handleChartTitle}
+                label="Chart Title"
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <FormControl fullWidth>
+                {/*Select Xaxis Data Set */}
+                <InputLabel id="make-select-label">X-AXIS DATA</InputLabel>
+                <Select
+                  labelId="xaxis-data-select-label"
+                  id="xaxis-data"
+                  value={xTitle}
+                  label="Manufacturer"
+                  onChange={handleXDataSet}
+                >
+                  {PROPERTIES_LIST.map((itm) => (
+                    <MenuItem value={itm} key={itm}>
+                      {itm}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={4}>
+              <FormControl fullWidth>
+                {/*Select Yaxis data set one */}
+                <InputLabel id="dataset-one-select-label">DATASET 1</InputLabel>
+                <Select
+                  labelId="dataset-one-select-label"
+                  id="dataset-one"
+                  value={yDataSetOneLabel}
+                  label="DATASET 1"
+                  onChange={handleYDataSetOneLabel}
+                >
+                  {Y_DATA_LIST.map((itm) => (
+                    <MenuItem value={itm} key={itm}>
+                      {itm}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={4}>
+              <FormControl fullWidth>
+                {/*Select Yaxis data se 2 */}
+                <InputLabel id="dataset-two-select-label">DATASET 2</InputLabel>
+                <Select
+                  labelId="dataset-two-select-label"
+                  id="dataset-two"
+                  value={yDataSetTwoLabel}
+                  label="DATASET 2"
+                  onChange={handleYDataSetTwoLabel}
+                >
+                  {Y_DATA_LIST.map((itm) => (
+                    <MenuItem value={itm} key={itm}>
+                      {itm}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            {/* LOGIC FOR SWITCHING BETWEEN LINE AND BAR CHART */}
+            {chartType === CHART_TYPES.LINE && (
+              <Line options={options} data={data} />
+            )}
+            {chartType === CHART_TYPES.BAR && (
+              <Bar options={options} data={data} />
+            )}
+          </Grid>
+          {/* RECORDS TABLE IMPLEMENTION */}
+          {/* MUI5 TABLE Component Docs: https://mui.com/material-ui/react-table/#main-content */}
+          <Grid item xs={12}>
+            {/* Hides the table using CSS display property if Chart Drawer is selected */}
+            <TableContainer
+              sx={{ display: tabs["displayRecords"] }}
+              component={Paper}
+            >
+              <Table aria-label="simple table">
+                <TableHead>
+                  <StyledTableRow>
+                    <StyledTableCell align="center"> Name </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {" "}
+                      Manufacturer{" "}
+                    </StyledTableCell>
+                    <StyledTableCell align="center"> Year </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {" "}
+                      Fuel Type{" "}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {row.Manufacturer}
+                      {" "}
+                      Transmission{" "}
                     </StyledTableCell>
-                    <StyledTableCell align="right">{row.Year}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.Fuel_Type}
+                    <StyledTableCell align="center">
+                      {" "}
+                      Engine CC{" "}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.Transmission}
+                    <StyledTableCell align="center"> Power </StyledTableCell>
+                    <StyledTableCell align="center"> Seats </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {" "}
+                      Mileage(KM/L){" "}
                     </StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row["Engine CC"]}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.Power}</StyledTableCell>
-                    <StyledTableCell align="right">{row.Seats}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row["Mileage Km/L"]}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.Price}</StyledTableCell>
-                    <StyledTableCell align="right">
-                      {row.AverageYearlySales}
+                    <StyledTableCell align="center"> Price </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {" "}
+                      Average Yearly Sales{" "}
                     </StyledTableCell>
                   </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                {/* Renders the Table rows form filtered rows */}
+                <TableBody>
+                  {rows.map((row) => (
+                    <StyledTableRow
+                      key={row.Name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <StyledTableCell component="th" scope="row">
+                        {row.Name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {row.Manufacturer}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Year}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Fuel_Type}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Transmission}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row["Engine CC"]}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Power}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Seats}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row["Mileage Km/L"]}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.Price}
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        {row.AverageYearlySales}
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
         </Grid>
       </Grid>
     </Box>
