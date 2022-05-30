@@ -539,7 +539,6 @@ const CompareCars = () => {
             container
             spacing={2}
             sx={{ display: tabs["displayCharts"] }}
-            xs={12}
           >
             <Grid item xs={12}>
               <ToggleButtonGroup
@@ -623,12 +622,15 @@ const CompareCars = () => {
               </FormControl>
             </Grid>
             {/* LOGIC FOR SWITCHING BETWEEN LINE AND BAR CHART */}
+            <Grid item xs={12}>
             {chartType === CHART_TYPES.LINE && (
               <Line options={options} data={data} />
             )}
             {chartType === CHART_TYPES.BAR && (
               <Bar options={options} data={data} />
             )}
+            </Grid>
+            
           </Grid>
           {/* RECORDS TABLE IMPLEMENTION */}
           {/* MUI5 TABLE Component Docs: https://mui.com/material-ui/react-table/#main-content */}
