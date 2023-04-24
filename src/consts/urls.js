@@ -2,7 +2,7 @@
 // Local API server url
 // export const BASE_URL =  'http://127.0.0.1:8000'
 // Hosted API server url
-export const BASE_URL = "https://autoapi.ajaysharma.dev";
+export const BASE_URL = "https://autoapi.onrender.com";
 
 //default csv file link for sales forecast page
 export const demoCSVFileURL =
